@@ -1,4 +1,4 @@
-package com.rsddm.ecommerce.features.home
+package com.rsddm.marketplace.features.home
 
 sealed class HomeUIState {
     data object Loading: HomeUIState()

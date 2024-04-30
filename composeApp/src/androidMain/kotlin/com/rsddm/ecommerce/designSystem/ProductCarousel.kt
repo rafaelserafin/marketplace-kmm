@@ -1,4 +1,4 @@
-package com.rsddm.ecommerce.designSystem
+package com.rsddm.marketplace.designSystem
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow

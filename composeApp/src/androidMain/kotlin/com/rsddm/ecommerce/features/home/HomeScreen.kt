@@ -1,4 +1,4 @@
-package com.rsddm.ecommerce.features.home
+package com.rsddm.marketplace.features.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

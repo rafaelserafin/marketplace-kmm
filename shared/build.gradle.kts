@@ -43,7 +43,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.rsddm.ecommerce.shared"
+    namespace = "com.rsddm.marketplace.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
