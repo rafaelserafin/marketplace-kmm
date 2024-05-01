@@ -12,8 +12,8 @@ sealed class NavigatorState(open val title: String) {
 }
 
 class Navigator {
-    private var _route = MutableStateFlow<Route>(AppRoutes.Products)
-    var route: StateFlow<Route> = _route.asStateFlow()
+    private var _route = MutableStateFlow<String>(AppRoutes.Products.route)
+    var route: StateFlow<String> = _route.asStateFlow()
 
     private var _state = MutableStateFlow<NavigatorState>(NavigatorState.Setup)
     var state: StateFlow<NavigatorState> = _state.asStateFlow()
@@ -23,9 +23,12 @@ class Navigator {
     }
 
     fun navigate(route: Route) {
-        _route.value = route
+        _route.value = route.route
     }
 
-    fun onBackPressed() {
+    fun navigate(route: Route, vararg params: String) {
+        val routeSplit = route.route.split("/")
+
+        _route.value = "${routeSplit.first()}${params.joinToString { "/$it" }}"
     }
 }

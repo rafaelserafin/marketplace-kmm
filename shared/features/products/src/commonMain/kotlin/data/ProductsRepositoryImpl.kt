@@ -3,6 +3,7 @@ package data
 import data.api.ProductsApi
 import domain.entities.Product
 import domain.entities.ProductsCategory
+import domain.entities.Search
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -30,4 +31,7 @@ class ProductsRepositoryImpl(
     override suspend fun getHealthProducts(): Flow<ProductsCategory> = flow {
         emit(api.getHealthProducts())
     }
+
+    override suspend fun searchProducts(search: Search): List<Product> =
+        api.searchProducts(search.query, search.offset, search.limit)
 }

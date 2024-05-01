@@ -83,18 +83,9 @@ private fun ProductCarouselItem(product: Product) {
             )
 
             product.oldPrice?.let {
-                val lineThroughPrice = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            textDecoration = TextDecoration.LineThrough
-                        )
-                    ) {
-                        append(it)
-                    }
-                }
 
-                Text(
-                    text = lineThroughPrice,
+                LineThroughText(
+                    text = it,
                     style = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.fillMaxWidth()
                 )

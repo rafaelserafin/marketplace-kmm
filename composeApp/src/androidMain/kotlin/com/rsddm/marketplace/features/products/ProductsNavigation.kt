@@ -11,6 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.rsddm.marketplace.features.products.list.ProductListViewModel
 import com.rsddm.marketplace.features.products.list.ProductsHomeScreen
+import com.rsddm.marketplace.features.products.search.ProductSearchScreen
+import com.rsddm.marketplace.features.products.search.ProductSearchViewModel
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.Route
@@ -28,6 +30,16 @@ fun NavGraphBuilder.productsNavigation(navigator: Navigator) {
             ProductsHomeScreen(viewModel)
         }
 
+        composable(ProductsRoutes.Search.route) {
+            val viewModel: ProductSearchViewModel = viewModel(
+                factory = ProductSearchViewModel.provideFactory(
+                    it.arguments?.getString("search") ?: "", navigator
+                )
+            )
+
+            ProductSearchScreen(viewModel)
+        }
+
         composable(ProductsRoutes.Detail.route) {
             Box(
                 modifier = Modifier.fillMaxSize().background(Color.Red)
@@ -38,5 +50,6 @@ fun NavGraphBuilder.productsNavigation(navigator: Navigator) {
 
 sealed class ProductsRoutes(route: String) : Route(route) {
     data object List : ProductsRoutes("products_list")
+    data object Search : ProductsRoutes("products_search/{search}")
     data object Detail : ProductsRoutes("products_detail")
 }

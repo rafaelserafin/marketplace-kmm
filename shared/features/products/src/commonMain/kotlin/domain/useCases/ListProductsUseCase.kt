@@ -2,16 +2,13 @@ package domain.useCases
 
 import Factory
 import common.UseCase
-import data.LocalStorage
 import data.ProductsRepository
 import data.ProductsRepositoryImpl
 import data.api.ProductsApiImpl
-import data.createDataStore
 import di.CoreContainer
 import domain.entities.ProductsCategory
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import network.Api
 import session.Session
 
 class LoadHomeProductsUseCaseFactory : Factory<LoadHomeProductsUseCase>() {
