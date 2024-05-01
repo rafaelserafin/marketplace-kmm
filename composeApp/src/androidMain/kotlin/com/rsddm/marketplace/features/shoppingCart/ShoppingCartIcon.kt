@@ -28,8 +28,8 @@ fun ShoppingCartIcon(viewModel: ShoppingCartIconViewModel) {
             contentDescription = "Carrinho de Compras",
             tint = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier
-                .padding(10.dp)
-                .size(28.dp)
+                .padding(12.dp)
+                .size(24.dp)
         )
 
         Text(
