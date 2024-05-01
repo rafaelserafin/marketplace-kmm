@@ -11,9 +11,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rsddm.marketplace.R
+import com.rsddm.marketplace.features.products.ProductsHomeScreen
 import com.rsddm.marketplace.features.shoppingCart.ShoppingCartIcon
 
 @Composable
@@ -32,11 +33,7 @@ fun HomeScreen() {
         // Top Bar
         TopBar()
 
-        // User Info Section
-        UserInfoSection()
-
-        // Product Carousel
-        ProductCarousel()
+        ProductsHomeScreen(viewModel())
     }
 }
 
@@ -77,50 +74,41 @@ fun TopBar() {
                 ShoppingCartIcon(viewModel())
             }
 
-            Box(
+            TextField(
+                value = "",
+                onValueChange = { },
+                placeholder = { Text("Pesquisar") },
                 modifier = Modifier
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                TextField(
-                    value = "",
-                    onValueChange = { },
-                    placeholder = { Text("Pesquisar") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp)),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Search
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onSearch = {
-                            // Ação de pesquisa
-                            // Implemente a lógica de pesquisa aqui
-                        }
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp)),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Search
+                ),
+                trailingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Pesquisar",
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(24.dp)
                     )
+                },
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        // Ação de pesquisa
+                        // Implemente a lógica de pesquisa aqui
+                    }
+                ),
+                colors = TextFieldDefaults.colors().copy(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                    focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
                 )
-
-
-                // Ícone de pesquisa
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Pesquisar",
-                    tint = Color.Gray,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(24.dp)
-                )
-            }
+            )
         }
     }
 }
 
-@Composable
-fun UserInfoSection() {
-    // Seção de informações do usuário (pode ser adicionado aqui)
-}
-
-@Composable
-fun ProductCarousel() {
-    // Lista de produtos em um carousel (pode ser adicionado aqui)
-}

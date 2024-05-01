@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.rsddm.marketplace.designSystem.components.ProductCarousel
 import domain.entities.ProductsCategory
 
 @Composable
@@ -37,16 +38,8 @@ fun ProductsHomeScreen(viewModel: HomeProductsViewModel) {
 private fun List(categories: List<ProductsCategory>) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         items(categories) { category ->
-            Text(text = category.category)
-            LazyRow {
-                items(category.products) { product ->
-                    Box(modifier = Modifier.size(120.dp), contentAlignment = Alignment.Center) {
-                        Text(product.name)
-                    }
-                }
-            }
+            ProductCarousel(category)
         }
-
     }
 }
 
