@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import domain.entities.ProductsCategory
 
 @Composable
-fun HomeScreen(viewModel: HomeProductsViewModel) {
+fun ProductsHomeScreen(viewModel: HomeProductsViewModel) {
 
     val uiState = viewModel.uiState.collectAsState()
 

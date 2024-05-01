@@ -13,15 +13,20 @@ class HomeProductsViewModel : ViewModel() {
 
     private val loadHomeProductsUseCase: LoadHomeProductsUseCase by LoadHomeProductsUseCaseFactory()
 
-    private val _uiState: MutableStateFlow<HomeProductsUIState> = MutableStateFlow(HomeProductsUIState.Loading)
+    private val _uiState: MutableStateFlow<HomeProductsUIState> =
+        MutableStateFlow(HomeProductsUIState.Loading)
     val uiState: StateFlow<HomeProductsUIState> = _uiState
 
     init {
         viewModelScope.launch {
             loadHomeProductsUseCase.execute(Unit) {
-                when(it) {
+                when (it) {
                     is Resource.Success -> _uiState.emit(HomeProductsUIState.Listing(it.data))
-                    is Resource.Error -> _uiState.emit(HomeProductsUIState.Error)
+                    is Resource.Error -> _uiState.emit(
+                        HomeProductsUIState.Error(
+                            it.exception?.message ?: ""
+                        )
+                    )
                 }
             }
         }
