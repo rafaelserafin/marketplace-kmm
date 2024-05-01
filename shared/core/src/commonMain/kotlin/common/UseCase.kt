@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOn
 
 abstract class UseCase<I, R> {
 
-    internal abstract suspend fun implementation(input: I): R
+    abstract suspend fun implementation(input: I): R
 
     suspend fun execute(input: I, flowCollector: FlowCollector<Resource<R>>) =
         flow<Resource<R>> { emit(Resource.Success(implementation(input))) }

@@ -33,6 +33,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(projects.shared)
             implementation(projects.shared.core)
+            implementation(projects.shared.features.products)
         }
     }
 }

@@ -31,3 +31,4 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":shared")
 include(":shared:core")
+include(":shared:features:products")

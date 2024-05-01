@@ -34,7 +34,7 @@ class LocalStorage(val dataStore: DataStore<Preferences>) {
         return dataStore.data.first()[stringPreferencesKey(key)]?.let { Json.decodeFromString<T>(it) }
     }
 
-    suspend inline fun get(key: String): String? {
+    suspend inline fun getString(key: String): String? {
         return dataStore.data.first()[stringPreferencesKey(key)]
     }
 

@@ -9,7 +9,7 @@ object Session {
 
     private val localStorage: LocalStorage by LocalStorageFactory()
 
-    suspend fun isAuthenticated() = !localStorage.get(AUTHENTICATION_KEY).isNullOrBlank()
+    suspend fun isAuthenticated() = !localStorage.getString(AUTHENTICATION_KEY).isNullOrBlank()
 
     suspend fun signIn(authentication: String) {
         localStorage.save(AUTHENTICATION_KEY, authentication)

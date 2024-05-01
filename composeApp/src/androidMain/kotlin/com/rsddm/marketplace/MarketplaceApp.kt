@@ -1,4 +1,4 @@
-package com.rsddm.ecommerce
+package com.rsddm.marketplace
 
 import android.app.Application
 import di.AppContainer
