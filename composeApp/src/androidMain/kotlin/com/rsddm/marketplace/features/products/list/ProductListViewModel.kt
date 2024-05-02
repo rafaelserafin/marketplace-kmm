@@ -42,7 +42,7 @@ class ProductListViewModel(navigator: Navigator) : BaseViewModel(navigator) {
     }
 
     fun onProductClick(product: Product) {
-        navigator.navigate(ProductsRoutes.Detail)
+        navigator.navigate(ProductsRoutes.Detail, product)
     }
 
     fun onSearch(text: String) {

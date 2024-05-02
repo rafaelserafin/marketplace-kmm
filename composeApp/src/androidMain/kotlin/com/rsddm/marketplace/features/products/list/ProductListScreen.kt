@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import com.rsddm.marketplace.designSystem.components.Loading
+import com.rsddm.marketplace.designSystem.components.OnProductClick
 import com.rsddm.marketplace.designSystem.components.OnSearch
 import com.rsddm.marketplace.designSystem.components.ProductCarousel
 import com.rsddm.marketplace.designSystem.components.SearchBar
@@ -23,7 +24,8 @@ fun ProductsHomeScreen(viewModel: ProductListViewModel) {
         is ProductListUIState.Listing -> {
             List(
                 (uiState.value as ProductListUIState.Listing).categories,
-                onSearch = viewModel::onSearch
+                onSearch = viewModel::onSearch,
+                onProductClick = viewModel::onProductClick
             )
         }
 
@@ -33,7 +35,7 @@ fun ProductsHomeScreen(viewModel: ProductListViewModel) {
 }
 
 @Composable
-private fun List(categories: List<ProductsCategory>, onSearch: OnSearch) {
+private fun List(categories: List<ProductsCategory>, onSearch: OnSearch, onProductClick: OnProductClick) {
     Column {
         SearchBar(
             hint = "Pesquisar",
@@ -44,7 +46,7 @@ private fun List(categories: List<ProductsCategory>, onSearch: OnSearch) {
 
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(categories) { category ->
-                ProductCarousel(category)
+                ProductCarousel(category, onProductClick)
             }
         }
     }

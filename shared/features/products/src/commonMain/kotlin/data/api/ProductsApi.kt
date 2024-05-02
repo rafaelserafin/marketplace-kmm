@@ -1,6 +1,7 @@
 package data.api
 
 import domain.entities.Product
+import domain.entities.ProductDetail
 import domain.entities.ProductsCategory
 import kotlinx.coroutines.flow.Flow
 
@@ -17,4 +18,6 @@ interface ProductsApi {
     suspend fun getHealthProducts() : ProductsCategory
 
     suspend fun searchProducts(query: String, offset: Int, limit: Int) : List<Product>
+
+    suspend fun productDetail(id: String) : ProductDetail
 }

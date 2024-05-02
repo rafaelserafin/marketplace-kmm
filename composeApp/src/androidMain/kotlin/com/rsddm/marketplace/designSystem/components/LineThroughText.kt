@@ -13,7 +13,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 
 @Composable
-fun LineThroughText(modifier: Modifier, text: String, style: TextStyle = LocalTextStyle.current) {
+fun LineThroughText(
+    modifier: Modifier = Modifier,
+    text: String,
+    style: TextStyle = LocalTextStyle.current
+) {
     val lineThroughPrice = buildAnnotatedString {
         withStyle(
             style = SpanStyle(

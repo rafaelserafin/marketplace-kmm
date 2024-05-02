@@ -4,9 +4,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
+import com.rsddm.marketplace.features.products.ProductsRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
+import domain.entities.Product
 import domain.entities.Search
 import domain.useCases.SearchProductsUseCase
 import domain.useCases.SearchProductsUseCaseFactory
@@ -28,6 +30,10 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseView
         navigator.setState(NavigatorState.Navigation(title = "Buscar produto"))
 
         search(query)
+    }
+
+    fun onProductClick(product: Product) {
+        navigator.navigate(ProductsRoutes.Detail, product)
     }
 
     fun search(query: String) {

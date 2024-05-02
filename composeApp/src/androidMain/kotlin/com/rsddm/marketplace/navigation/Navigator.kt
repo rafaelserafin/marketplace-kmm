@@ -1,9 +1,11 @@
 package com.rsddm.marketplace.navigation
 
-import androidx.compose.ui.graphics.painter.Painter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 sealed class NavigatorState(open val title: String) {
     data object Setup : NavigatorState("welcome")
@@ -12,7 +14,7 @@ sealed class NavigatorState(open val title: String) {
 }
 
 class Navigator {
-    private var _route = MutableStateFlow<String>(AppRoutes.Products.route)
+    private var _route = MutableStateFlow(AppRoutes.Products.route)
     var route: StateFlow<String> = _route.asStateFlow()
 
     private var _state = MutableStateFlow<NavigatorState>(NavigatorState.Setup)
@@ -27,8 +29,14 @@ class Navigator {
     }
 
     fun navigate(route: Route, vararg params: String) {
-        val routeSplit = route.route.split("/")
+        val raw = route.route.split("/").first()
 
-        _route.value = "${routeSplit.first()}${params.joinToString { "/$it" }}"
+        _route.value = "$raw${params.joinToString { "/$it" }}"
+    }
+
+    inline fun <reified T> navigate(route: Route, `object`: T) {
+        val param = Json.encodeToString(`object`)
+
+        navigate(route, param)
     }
 }

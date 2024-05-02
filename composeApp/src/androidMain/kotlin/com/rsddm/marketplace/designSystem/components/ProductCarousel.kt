@@ -2,6 +2,7 @@ package com.rsddm.marketplace.designSystem.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,45 +20,49 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.rsddm.marketplace.R
 import domain.entities.Product
 import domain.entities.ProductsCategory
 
+typealias OnProductClick = (Product) -> Unit
+
 @Composable
-fun ProductCarousel(category: ProductsCategory) {
+fun ProductCarousel(
+    category: ProductsCategory,
+    onProductClick: OnProductClick,
+    horizontalPadding: Dp = 16.dp
+) {
 
     Column {
         Text(
             text = category.category,
             style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = horizontalPadding, vertical = 8.dp)
         )
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp)
+            contentPadding = PaddingValues(start = horizontalPadding, end = horizontalPadding)
         ) {
             items(category.products) {
-                ProductCarouselItem(it)
+                ProductCarouselItem(it, onProductClick)
             }
         }
     }
 }
 
 @Composable
-private fun ProductCarouselItem(product: Product) {
+private fun ProductCarouselItem(product: Product, onProductClick: OnProductClick) {
 
     Surface(
         shadowElevation = 4.dp,
-        shape = RoundedCornerShape(4.dp)
+        shape = RoundedCornerShape(4.dp),
+        modifier = Modifier.clickable {
+            onProductClick(product)
+        }
     ) {
         Column(
             modifier = Modifier.width(120.dp)

@@ -2,6 +2,7 @@ package data
 
 import data.api.ProductsApi
 import domain.entities.Product
+import domain.entities.ProductDetail
 import domain.entities.ProductsCategory
 import domain.entities.Search
 import kotlinx.coroutines.delay
@@ -34,4 +35,9 @@ class ProductsRepositoryImpl(
 
     override suspend fun searchProducts(search: Search): List<Product> =
         api.searchProducts(search.query, search.offset, search.limit)
+
+    override suspend fun getProductDetail(product: Product): ProductDetail =
+        api.productDetail("any").copy(
+            product = product
+        )
 }

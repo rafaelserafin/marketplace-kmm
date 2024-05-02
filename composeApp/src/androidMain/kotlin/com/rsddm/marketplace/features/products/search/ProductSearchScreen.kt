@@ -2,6 +2,7 @@ package com.rsddm.marketplace.features.products.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.rsddm.marketplace.R
 import com.rsddm.marketplace.designSystem.components.LineThroughText
 import com.rsddm.marketplace.designSystem.components.Loading
+import com.rsddm.marketplace.designSystem.components.OnProductClick
 import com.rsddm.marketplace.designSystem.components.OnSearch
 import com.rsddm.marketplace.designSystem.components.SearchBar
 import domain.entities.Product
@@ -45,14 +47,14 @@ fun ProductSearchScreen(viewModel: ProductSearchViewModel) {
         is ProductSearchUIState.Searching -> Searching(
             viewModel.query,
             (uiState.value as ProductSearchUIState.Searching),
-            onSearch = viewModel::search
+            onSearch = viewModel::search,
+            onProductClick = viewModel::onProductClick
         )
     }
-
 }
 
 @Composable
-private fun Searching(text: String, searching: ProductSearchUIState.Searching, onSearch: OnSearch) {
+private fun Searching(text: String, searching: ProductSearchUIState.Searching, onSearch: OnSearch, onProductClick: OnProductClick) {
 
     val listState = rememberLazyListState()
 
@@ -80,7 +82,7 @@ private fun Searching(text: String, searching: ProductSearchUIState.Searching, o
             state = listState
         ) {
             items(searching.products) {
-                Product(it)
+                Product(it, onProductClick)
             }
 
             if (searching.loadMore) {
@@ -98,10 +100,13 @@ private fun Searching(text: String, searching: ProductSearchUIState.Searching, o
 }
 
 @Composable
-private fun Product(product: Product) {
+private fun Product(product: Product, onProductClick: OnProductClick) {
     Surface(
         shadowElevation = 4.dp,
-        shape = RoundedCornerShape(4.dp)
+        shape = RoundedCornerShape(4.dp),
+        modifier = Modifier.clickable {
+            onProductClick(product)
+        }
     ) {
         Row(
             modifier = Modifier.height(120.dp)

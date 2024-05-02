@@ -1,6 +1,7 @@
 package data.api
 
 import domain.entities.Product
+import domain.entities.ProductDetail
 import domain.entities.ProductsCategory
 import kotlinx.coroutines.delay
 import network.Api
@@ -41,5 +42,11 @@ class ProductsApiImpl(private val api: Api) : ProductsApi {
 
         //Ignore query for fake backend
         return api.get<List<Product>>("products?query=any&offset=$offset&limit=$limit")
+    }
+
+    override suspend fun productDetail(id: String): ProductDetail {
+        delay(550)
+
+        return api.get<ProductDetail>("product?id=any")
     }
 }
