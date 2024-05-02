@@ -21,7 +21,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -29,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rsddm.marketplace.R
 import com.rsddm.marketplace.designSystem.components.LineThroughText
 import com.rsddm.marketplace.designSystem.components.Loading
@@ -40,7 +40,7 @@ import domain.entities.Product
 @Composable
 fun ProductSearchScreen(viewModel: ProductSearchViewModel) {
 
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     when (uiState.value) {
         is ProductSearchUIState.Loading -> Loading()

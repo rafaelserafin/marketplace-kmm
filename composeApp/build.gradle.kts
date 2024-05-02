@@ -25,6 +25,7 @@ kotlin {
             implementation(libs.compose.ui.tooling)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

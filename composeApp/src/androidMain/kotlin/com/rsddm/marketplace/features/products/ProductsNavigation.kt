@@ -1,6 +1,7 @@
 package com.rsddm.marketplace.features.products
 
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -52,7 +53,7 @@ fun NavGraphBuilder.productsNavigation(navigator: Navigator) {
                 )
 
                 ProductDetailScreen(
-                    viewModel.uiState.collectAsState().value,
+                    viewModel.uiState.collectAsStateWithLifecycle().value,
                     viewModel::onBuyClick,
                     viewModel::onAddToCartClick,
                     viewModel::onProductClick

@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rsddm.marketplace.designSystem.components.Loading
 import com.rsddm.marketplace.designSystem.components.OnProductClick
 import com.rsddm.marketplace.designSystem.components.OnSearch
@@ -18,7 +19,7 @@ import domain.entities.ProductsCategory
 @Composable
 fun ProductsHomeScreen(viewModel: ProductListViewModel) {
 
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     when (uiState.value) {
         is ProductListUIState.Listing -> {
