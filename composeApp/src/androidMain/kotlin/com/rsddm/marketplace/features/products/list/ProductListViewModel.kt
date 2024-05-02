@@ -25,8 +25,6 @@ class ProductListViewModel(navigator: Navigator) : BaseViewModel(navigator) {
     val uiState: StateFlow<ProductListUIState> = _uiState
 
     init {
-        navigator.setState(NavigatorState.Home("Olá, Rafael Serafin", R.drawable.user_logo))
-
         viewModelScope.launch {
             loadHomeProductsUseCase.execute(Unit) {
                 when (it) {
@@ -59,5 +57,9 @@ class ProductListViewModel(navigator: Navigator) : BaseViewModel(navigator) {
                 )
             }
         }
+    }
+
+    override fun setupTopBar() {
+        navigator.setState(NavigatorState.Home("Olá, Rafael Serafin", R.drawable.user_logo))
     }
 }

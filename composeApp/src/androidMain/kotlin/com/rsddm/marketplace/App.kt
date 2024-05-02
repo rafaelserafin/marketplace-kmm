@@ -13,7 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rsddm.marketplace.designSystem.components.TopBar
 import com.rsddm.marketplace.features.products.productsNavigation
-import com.rsddm.marketplace.features.shoppingCart.ShoppingCartIcon
+import com.rsddm.marketplace.features.shoppingCart.icon.ShoppingCartIcon
+import com.rsddm.marketplace.features.shoppingCart.icon.ShoppingCartIconViewModel
+import com.rsddm.marketplace.features.shoppingCart.shoppingCartNavigation
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
@@ -25,6 +27,12 @@ fun HomeScreen() {
 
     val route = navigator.route.collectAsStateWithLifecycle()
     val state = navigator.state.collectAsStateWithLifecycle()
+
+    val shoppingCartIconViewModel: ShoppingCartIconViewModel = viewModel(
+        factory = ShoppingCartIconViewModel.provideFactory(
+            navigator
+        )
+    )
 
     LaunchedEffect(route.value) {
         navController.navigate(route = route.value)
@@ -47,8 +55,15 @@ fun HomeScreen() {
                     title = state.value.title,
                     onBackPressed = { navController.popBackStack() },
                     trailingIcon = {
-                        ShoppingCartIcon(viewModel())
+                        ShoppingCartIcon(shoppingCartIconViewModel)
                     }
+                )
+            }
+
+            is NavigatorState.CleanNavigation -> {
+                TopBar(
+                    title = state.value.title,
+                    onBackPressed = { navController.popBackStack() }
                 )
             }
 
@@ -58,6 +73,7 @@ fun HomeScreen() {
         NavHost(navController, startDestination = AppRoutes.Setup.route) {
             composable(route = AppRoutes.Setup.route) { }
             productsNavigation(navigator)
+            shoppingCartNavigation(navigator)
         }
 
     }

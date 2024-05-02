@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -18,6 +19,10 @@ import domain.entities.ProductsCategory
 
 @Composable
 fun ProductsHomeScreen(viewModel: ProductListViewModel) {
+
+    LaunchedEffect(true) {
+        viewModel.setupTopBar()
+    }
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 

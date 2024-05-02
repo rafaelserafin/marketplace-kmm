@@ -27,7 +27,6 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseView
     val uiState: StateFlow<ProductSearchUIState> = _uiState
 
     init {
-        navigator.setState(NavigatorState.Navigation(title = "Buscar produto"))
 
         search(query)
     }
@@ -88,5 +87,9 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseView
                 )
             }
         }
+    }
+
+    override fun setupTopBar() {
+        navigator.setState(NavigatorState.Navigation(title = "Buscar produto"))
     }
 }

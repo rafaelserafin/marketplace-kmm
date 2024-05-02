@@ -39,6 +39,9 @@ import domain.entities.Product
 
 @Composable
 fun ProductSearchScreen(viewModel: ProductSearchViewModel) {
+    LaunchedEffect(true) {
+        viewModel.setupTopBar()
+    }
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 

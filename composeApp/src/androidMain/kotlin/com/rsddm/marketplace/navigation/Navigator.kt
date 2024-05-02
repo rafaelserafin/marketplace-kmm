@@ -11,6 +11,7 @@ sealed class NavigatorState(open val title: String) {
     data object Setup : NavigatorState("welcome")
     data class Home(override val title: String, val imageRes: Int) : NavigatorState(title)
     data class Navigation(override val title: String) : NavigatorState(title)
+    data class CleanNavigation(override val title: String) : NavigatorState(title)
 }
 
 class Navigator {

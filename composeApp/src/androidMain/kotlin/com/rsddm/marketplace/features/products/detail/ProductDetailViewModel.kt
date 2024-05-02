@@ -5,11 +5,15 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
 import com.rsddm.marketplace.features.products.ProductsRoutes
+import com.rsddm.marketplace.features.shoppingCart.ShoppingCartRoutes
+import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
+import data.session.ShoppingCartSession
 import domain.entities.Product
 import domain.entities.ProductDetail
+import domain.entities.ShoppingCartProduct
 import domain.useCases.GetProductDetailUseCase
 import domain.useCases.GetProductDetailUseCaseCaseFactory
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,8 +30,6 @@ open class ProductDetailViewModel(product: Product, navigator: Navigator) :
     val uiState: StateFlow<ProductDetailUIState> = _uiState
 
     init {
-        navigator.setState(NavigatorState.Navigation(title = "Detalhes"))
-
         viewModelScope.launch {
             getProductDetailUseCase.execute(product) {
                 when (it) {
@@ -43,10 +45,18 @@ open class ProductDetailViewModel(product: Product, navigator: Navigator) :
     }
 
     fun onBuyClick(productDetail: ProductDetail) {
-
+        navigator.navigate(AppRoutes.ShoppingCart)
     }
 
     fun onAddToCartClick(productDetail: ProductDetail) {
+        viewModelScope.launch {
+            ShoppingCartSession.add(
+                ShoppingCartProduct(
+                    productDetail.product.name,
+                    productDetail.product.price,
+                )
+            )
+        }
     }
 
     companion object {
@@ -61,5 +71,9 @@ open class ProductDetailViewModel(product: Product, navigator: Navigator) :
                 )
             }
         }
+    }
+
+    override fun setupTopBar() {
+        navigator.setState(NavigatorState.Navigation(title = "Detalhes"))
     }
 }
