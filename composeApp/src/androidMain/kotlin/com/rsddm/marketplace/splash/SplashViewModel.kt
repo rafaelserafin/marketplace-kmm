@@ -6,6 +6,7 @@ import common.Resource
 import domain.entities.Theme
 import domain.useCases.LoadAppThemeUseCase
 import domain.useCases.LoadAppThemeUseCaseFactory
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +26,8 @@ class SetupViewModel : ViewModel() {
     }
 
     private suspend fun setupColor() {
+        delay(2000)
+
         loadAppThemeUseCase.execute("varejo") {
             _state.value = when (it) {
                 is Resource.Error -> SetupState.Finish(

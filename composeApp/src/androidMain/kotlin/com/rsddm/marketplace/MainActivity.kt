@@ -17,6 +17,7 @@ import com.rsddm.marketplace.designSystem.theme.Blue
 import com.rsddm.marketplace.designSystem.theme.MarketplaceTheme
 import com.rsddm.marketplace.designSystem.theme.Orange
 import com.rsddm.marketplace.designSystem.theme.OrangeVariant
+import com.rsddm.marketplace.designSystem.theme.toColorScheme
 import com.rsddm.marketplace.splash.SetupState
 import com.rsddm.marketplace.splash.SetupViewModel
 import com.rsddm.marketplace.splash.SplashScreen
@@ -35,18 +36,7 @@ class MainActivity : ComponentActivity() {
 
                 is SetupState.Finish -> {
                     val theme = (state.value as SetupState.Finish).theme
-                    MarketplaceTheme(
-                        lightColorScheme(
-                            primary = Color(theme.primary),
-                            secondary = Color(theme.secondary),
-                            tertiary = Color(theme.tertiary),
-                            onPrimary = Color(theme.onPrimary),
-                            onSecondary = Color(theme.onSecondary),
-                            onTertiary = Color(theme.onTertiary),
-                            background = Color(theme.background),
-                            onBackground = Color(theme.onBackground),
-                        )
-                    ) {
+                    MarketplaceTheme(theme.toColorScheme()) {
                         Surface(
                             modifier = Modifier.fillMaxSize(),
                             color = MaterialTheme.colorScheme.background
