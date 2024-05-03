@@ -58,6 +58,11 @@ open class ProductDetailViewModel(product: Product, navigator: Navigator) :
         }
     }
 
+
+    override fun setupTopBar(title: String) {
+        navigator.setState(NavigatorState.Navigation(title = title))
+    }
+
     companion object {
         fun provideFactory(
             product: Product,
@@ -70,9 +75,5 @@ open class ProductDetailViewModel(product: Product, navigator: Navigator) :
                 )
             }
         }
-    }
-
-    override fun setupTopBar() {
-        navigator.setState(NavigatorState.Navigation(title = "Detalhes"))
     }
 }

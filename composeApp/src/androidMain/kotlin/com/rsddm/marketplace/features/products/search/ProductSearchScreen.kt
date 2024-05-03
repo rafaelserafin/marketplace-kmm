@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rsddm.marketplace.R
@@ -39,8 +40,9 @@ import domain.entities.Product
 
 @Composable
 fun ProductSearchScreen(viewModel: ProductSearchViewModel) {
+    val title = stringResource(R.string.product_search)
     LaunchedEffect(true) {
-        viewModel.setupTopBar()
+        viewModel.setupTopBar(title)
     }
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -57,7 +59,12 @@ fun ProductSearchScreen(viewModel: ProductSearchViewModel) {
 }
 
 @Composable
-private fun Searching(text: String, searching: ProductSearchUIState.Searching, onSearch: OnSearch, onProductClick: OnProductClick) {
+private fun Searching(
+    text: String,
+    searching: ProductSearchUIState.Searching,
+    onSearch: OnSearch,
+    onProductClick: OnProductClick
+) {
 
     val listState = rememberLazyListState()
 

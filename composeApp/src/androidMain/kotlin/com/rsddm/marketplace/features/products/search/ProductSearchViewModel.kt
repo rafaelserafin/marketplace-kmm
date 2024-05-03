@@ -75,6 +75,10 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseView
         }
     }
 
+    override fun setupTopBar(title: String) {
+        navigator.setState(NavigatorState.Navigation(title = title))
+    }
+
     companion object {
         fun provideFactory(
             search: String,
@@ -87,9 +91,5 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseView
                 )
             }
         }
-    }
-
-    override fun setupTopBar() {
-        navigator.setState(NavigatorState.Navigation(title = "Buscar produto"))
     }
 }

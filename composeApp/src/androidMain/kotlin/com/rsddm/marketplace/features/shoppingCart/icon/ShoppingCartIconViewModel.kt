@@ -31,7 +31,7 @@ class ShoppingCartIconViewModel(navigator: Navigator) : BaseViewModel(navigator)
         navigator.navigate(ShoppingCartRoutes.ShoppingCartProducts)
     }
 
-    override fun setupTopBar() { }
+    override fun setupTopBar(title: String) { }
 
     companion object {
         fun provideFactory(

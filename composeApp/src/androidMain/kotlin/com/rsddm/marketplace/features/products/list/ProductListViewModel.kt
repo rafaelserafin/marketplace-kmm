@@ -47,6 +47,10 @@ class ProductListViewModel(navigator: Navigator) : BaseViewModel(navigator) {
         navigator.navigate(ProductsRoutes.Search, text)
     }
 
+    override fun setupTopBar(title: String) {
+        navigator.setState(NavigatorState.Home("Olá, Rafael Serafin", R.drawable.user_logo))
+    }
+
     companion object {
         fun provideFactory(
             navigator: Navigator,
@@ -57,9 +61,5 @@ class ProductListViewModel(navigator: Navigator) : BaseViewModel(navigator) {
                 )
             }
         }
-    }
-
-    override fun setupTopBar() {
-        navigator.setState(NavigatorState.Home("Olá, Rafael Serafin", R.drawable.user_logo))
     }
 }

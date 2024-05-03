@@ -49,10 +49,11 @@ fun ProductDetailScreen(
     onBuyClick: OnProductDetailClick,
     onAddToCartClick: OnProductDetailClick,
     onProductClick: OnProductClick,
-    setupTopBar: () -> Unit
+    setupTopBar: (String) -> Unit
 ) {
+    val title = stringResource(R.string.products_detail)
     LaunchedEffect(true) {
-        setupTopBar()
+        setupTopBar(title)
     }
 
     LazyColumn(

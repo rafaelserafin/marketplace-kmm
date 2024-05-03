@@ -21,7 +21,7 @@ import domain.entities.ProductsCategory
 fun ProductsHomeScreen(viewModel: ProductListViewModel) {
 
     LaunchedEffect(true) {
-        viewModel.setupTopBar()
+        viewModel.setupTopBar("")
     }
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
