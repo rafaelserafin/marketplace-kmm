@@ -1,5 +1,6 @@
 package com.rsddm.marketplace.navigation
 
+import com.rsddm.marketplace.features.products.ProductsRoutes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,7 @@ sealed class NavigatorState(open val title: String) {
 }
 
 class Navigator {
-    private var _route = MutableStateFlow(AppRoutes.Products.route)
+    private var _route = MutableStateFlow(ProductsRoutes.List.route)
     var route: StateFlow<String> = _route.asStateFlow()
 
     private var _state = MutableStateFlow<NavigatorState>(NavigatorState.Setup)

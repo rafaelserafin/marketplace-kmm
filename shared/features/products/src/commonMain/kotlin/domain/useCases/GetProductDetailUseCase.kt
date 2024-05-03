@@ -9,7 +9,7 @@ import di.CoreContainer
 import domain.entities.Product
 import domain.entities.ProductDetail
 
-class GetProductDetailUseCaseCaseFactory : Factory<GetProductDetailUseCase>() {
+class GetProductDetailUseCaseFactory : Factory<GetProductDetailUseCase>() {
     override fun provide(): GetProductDetailUseCase {
         return GetProductDetailUseCase(
             ProductsRepositoryImpl(

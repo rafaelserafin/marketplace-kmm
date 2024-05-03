@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rsddm.marketplace.designSystem.components.TopBar
 import com.rsddm.marketplace.features.products.productsNavigation
@@ -21,11 +21,30 @@ import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 
 @Composable
-fun HomeScreen() {
+fun App() {
     val navController = rememberNavController()
     val navigator = remember { Navigator() }
 
     val route = navigator.route.collectAsStateWithLifecycle()
+
+    LaunchedEffect(route.value) {
+        if (navController.currentDestination?.route != route.value) {
+            navController.navigate(route = route.value)
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        AppTopBar(navigator, navController)
+
+        NavHost(navController, startDestination = AppRoutes.Products.route) {
+            productsNavigation(navigator)
+            shoppingCartNavigation(navigator)
+        }
+    }
+}
+
+@Composable
+private fun AppTopBar(navigator: Navigator, navController: NavController) {
     val state = navigator.state.collectAsStateWithLifecycle()
 
     val shoppingCartIconViewModel: ShoppingCartIconViewModel = viewModel(
@@ -34,47 +53,34 @@ fun HomeScreen() {
         )
     )
 
-    LaunchedEffect(route.value) {
-        navController.navigate(route = route.value)
-    }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        when (state.value) {
-            is NavigatorState.Home -> {
-                TopBar(
-                    title = state.value.title,
-                    image = painterResource(id = (state.value as NavigatorState.Home).imageRes),
-                    trailingIcon = {
-                        ShoppingCartIcon(viewModel())
-                    }
-                )
-            }
-
-            is NavigatorState.Navigation -> {
-                TopBar(
-                    title = state.value.title,
-                    onBackPressed = { navController.popBackStack() },
-                    trailingIcon = {
-                        ShoppingCartIcon(shoppingCartIconViewModel)
-                    }
-                )
-            }
-
-            is NavigatorState.CleanNavigation -> {
-                TopBar(
-                    title = state.value.title,
-                    onBackPressed = { navController.popBackStack() }
-                )
-            }
-
-            else -> {}
+    when (state.value) {
+        is NavigatorState.Home -> {
+            TopBar(
+                title = state.value.title,
+                image = painterResource(id = (state.value as NavigatorState.Home).imageRes),
+                trailingIcon = {
+                    ShoppingCartIcon(viewModel())
+                }
+            )
         }
 
-        NavHost(navController, startDestination = AppRoutes.Setup.route) {
-            composable(route = AppRoutes.Setup.route) { }
-            productsNavigation(navigator)
-            shoppingCartNavigation(navigator)
+        is NavigatorState.Navigation -> {
+            TopBar(
+                title = state.value.title,
+                onBackPressed = { navController.popBackStack() },
+                trailingIcon = {
+                    ShoppingCartIcon(shoppingCartIconViewModel)
+                }
+            )
         }
 
+        is NavigatorState.CleanNavigation -> {
+            TopBar(
+                title = state.value.title,
+                onBackPressed = { navController.popBackStack() }
+            )
+        }
+
+        else -> {}
     }
 }

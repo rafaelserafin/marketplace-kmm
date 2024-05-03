@@ -1,22 +1,17 @@
 package session
 
-import data.LocalStorage
-import data.LocalStorageFactory
+import di.CoreContainer
 
 private const val AUTHENTICATION_KEY = "authentication"
 
 object Session {
-
-    private val localStorage: LocalStorage by LocalStorageFactory()
-
-    suspend fun isAuthenticated() = !localStorage.getString(AUTHENTICATION_KEY).isNullOrBlank()
+    suspend fun isAuthenticated() = !CoreContainer.localStorage.getString(AUTHENTICATION_KEY).isNullOrBlank()
 
     suspend fun signIn(authentication: String) {
-        localStorage.save(AUTHENTICATION_KEY, authentication)
+        CoreContainer.localStorage.save(AUTHENTICATION_KEY, authentication)
     }
 
     suspend fun signOut() {
-        localStorage.save(AUTHENTICATION_KEY, "")
+        CoreContainer.localStorage.save(AUTHENTICATION_KEY, "")
     }
-
 }

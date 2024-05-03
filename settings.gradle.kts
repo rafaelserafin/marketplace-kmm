@@ -31,5 +31,6 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":shared")
 include(":shared:core")
+include(":shared:features:designSystem")
 include(":shared:features:products")
 include(":shared:features:shoppingCart")

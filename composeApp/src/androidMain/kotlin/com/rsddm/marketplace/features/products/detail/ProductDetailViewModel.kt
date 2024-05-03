@@ -5,7 +5,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
 import com.rsddm.marketplace.features.products.ProductsRoutes
-import com.rsddm.marketplace.features.shoppingCart.ShoppingCartRoutes
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
@@ -15,7 +14,7 @@ import domain.entities.Product
 import domain.entities.ProductDetail
 import domain.entities.ShoppingCartProduct
 import domain.useCases.GetProductDetailUseCase
-import domain.useCases.GetProductDetailUseCaseCaseFactory
+import domain.useCases.GetProductDetailUseCaseFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 open class ProductDetailViewModel(product: Product, navigator: Navigator) :
     BaseViewModel(navigator) {
 
-    private val getProductDetailUseCase: GetProductDetailUseCase by GetProductDetailUseCaseCaseFactory()
+    private val getProductDetailUseCase: GetProductDetailUseCase by GetProductDetailUseCaseFactory()
 
     private val _uiState: MutableStateFlow<ProductDetailUIState> =
         MutableStateFlow(ProductDetailUIState.Loading(ProductDetail(product = product)))
