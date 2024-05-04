@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
 import com.rsddm.marketplace.core.toDoubleFromCurrency
 import com.rsddm.marketplace.core.toStringCurrency
+import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
@@ -83,18 +84,33 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
             ) {
                 when (it) {
                     is Resource.Error -> _state.value =
-                        when(it.exception) {
-                            is UnauthorizedException -> ShoppingCartUIState.OrderError(it.exception?.message.orEmpty(), "ir para o login") {
-                                //navigator.navigate()
+                        when (it.exception) {
+                            is UnauthorizedException -> ShoppingCartUIState.OrderError(
+                                it.exception?.message.orEmpty(),
+                                "ir para o login"
+                            ) {
+                                navigator.navigateAndPop(AppRoutes.Profile, AppRoutes.Shopping)
                             }
 
                             is StockLackException,
-                            is TransactionException -> ShoppingCartUIState.OrderError(it.exception?.message.orEmpty(), "revisar pedido") {
-                                _state.value = ShoppingCartUIState.CheckIn(products, calculateTotalAmount(products))
+                            is TransactionException -> ShoppingCartUIState.OrderError(
+                                it.exception?.message.orEmpty(),
+                                "revisar pedido"
+                            ) {
+                                _state.value = ShoppingCartUIState.CheckIn(
+                                    products,
+                                    calculateTotalAmount(products)
+                                )
                             }
 
-                            else -> ShoppingCartUIState.OrderError(it.exception?.message.orEmpty(), "tentar novamente") {
-                                _state.value = ShoppingCartUIState.CheckIn(products, calculateTotalAmount(products))
+                            else -> ShoppingCartUIState.OrderError(
+                                it.exception?.message.orEmpty(),
+                                "tentar novamente"
+                            ) {
+                                _state.value = ShoppingCartUIState.CheckIn(
+                                    products,
+                                    calculateTotalAmount(products)
+                                )
                             }
                         }
 
@@ -108,10 +124,25 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
     }
 
     override fun setupTopBar(title: String) {
-        when(_state.value) {
-            is ShoppingCartUIState.CheckIn -> navigator.setState(navigatorState = NavigatorState.CleanNavigation(title))
-            ShoppingCartUIState.Empty -> navigator.setState(navigatorState = NavigatorState.CleanNavigation(title))
-            ShoppingCartUIState.FinalizingPurchase -> navigator.setState(navigatorState = NavigatorState.CleanNavigation(title))
+        when (_state.value) {
+            is ShoppingCartUIState.CheckIn -> navigator.setState(
+                navigatorState = NavigatorState.CleanNavigation(
+                    title
+                )
+            )
+
+            ShoppingCartUIState.Empty -> navigator.setState(
+                navigatorState = NavigatorState.CleanNavigation(
+                    title
+                )
+            )
+
+            ShoppingCartUIState.FinalizingPurchase -> navigator.setState(
+                navigatorState = NavigatorState.CleanNavigation(
+                    title
+                )
+            )
+
             is ShoppingCartUIState.OrderError -> navigator.setState(navigatorState = NavigatorState.None)
             is ShoppingCartUIState.OrderSuccess -> navigator.setState(navigatorState = NavigatorState.None)
         }

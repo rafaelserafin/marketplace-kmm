@@ -1,0 +1,51 @@
+package com.rsddm.marketplace.features.profile
+
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import com.rsddm.marketplace.features.products.list.ProductListViewModel
+import com.rsddm.marketplace.features.products.list.ProductsHomeScreen
+import com.rsddm.marketplace.features.profile.detail.ProfileDetailScreen
+import com.rsddm.marketplace.features.profile.detail.ProfileDetailViewModel
+import com.rsddm.marketplace.features.profile.login.ProfileLoginScreen
+import com.rsddm.marketplace.features.profile.login.ProfileLoginViewModel
+import com.rsddm.marketplace.navigation.AppRoutes
+import com.rsddm.marketplace.navigation.Navigator
+import com.rsddm.marketplace.navigation.Route
+import session.Session
+
+fun NavGraphBuilder.profileNavigation(navigator: Navigator) {
+    navigation(
+        route = AppRoutes.Profile.route,
+        startDestination = if (Session.userSession == null) ProfileRoutes.Login.route else ProfileRoutes.Profile.route
+    ) {
+        composable(ProfileRoutes.Profile.route) {
+            val viewModel: ProfileDetailViewModel = viewModel(
+                factory = ProfileDetailViewModel.provideFactory(navigator)
+            )
+
+            ProfileDetailScreen(
+                viewModel.state.collectAsStateWithLifecycle().value,
+                viewModel::setupTopBar
+            )
+        }
+
+        composable(ProfileRoutes.Login.route) {
+            val viewModel: ProfileLoginViewModel = viewModel(
+                factory = ProfileLoginViewModel.provideFactory(navigator)
+            )
+
+            ProfileLoginScreen(
+                viewModel.state.collectAsStateWithLifecycle().value,
+                viewModel::setupTopBar
+            )
+        }
+    }
+}
+
+sealed class ProfileRoutes(route: String) : Route(route) {
+    data object Login : ProfileRoutes("profile_login")
+    data object Profile : ProfileRoutes("profile_detail")
+}

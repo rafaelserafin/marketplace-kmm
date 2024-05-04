@@ -6,8 +6,8 @@ private const val AUTHENTICATION_KEY = "authentication"
 
 object Session {
 
-    val userToken: String
-        get() = "abc"
+    var userSession: UserSession? = null
+        private set
 
     suspend fun isAuthenticated() = !CoreContainer.localStorage.getString(AUTHENTICATION_KEY).isNullOrBlank()
 

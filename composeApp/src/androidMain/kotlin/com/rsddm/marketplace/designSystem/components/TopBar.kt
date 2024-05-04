@@ -2,9 +2,11 @@ package com.rsddm.marketplace.designSystem.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 
 
@@ -29,8 +32,10 @@ import androidx.compose.ui.unit.dp
 fun TopBar(
     modifier: Modifier = Modifier,
     title: String,
+    textUnderline: Boolean = false,
     image: Painter? = null,
     imageContentDescription: String? = null,
+    onTitleClick: (() -> Unit)? = null,
     onBackPressed: (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -47,7 +52,8 @@ fun TopBar(
         ) {
             when {
                 onBackPressed != null -> {
-                    Button(onClick = onBackPressed,
+                    Button(
+                        onClick = onBackPressed,
                         contentPadding = PaddingValues(0.dp),
                         modifier = Modifier.size(48.dp)
                     ) {
@@ -79,6 +85,10 @@ fun TopBar(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f)
+                    .clickable(enabled = onTitleClick != null) {
+                        onTitleClick?.invoke()
+                    },
+                textDecoration = if (textUnderline) TextDecoration.Underline else TextDecoration.None
             )
 
             trailingIcon?.invoke()

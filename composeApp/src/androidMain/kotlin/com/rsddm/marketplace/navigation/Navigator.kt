@@ -30,6 +30,14 @@ class Navigator {
         _route.value = object : Route(route.route) { }
     }
 
+    fun navigateAndPop(route: Route, from: Route) {
+        // Generate a new RouteId
+        _route.value = object : Route(route.route) {
+            override val from: Route
+                get() = from
+        }
+    }
+
     fun navigate(route: Route, vararg params: String) {
         val raw = route.route.split("/").first()
 

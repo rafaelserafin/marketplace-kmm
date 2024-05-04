@@ -12,12 +12,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.rsddm.marketplace.designSystem.components.TopBar
 import com.rsddm.marketplace.features.products.productsNavigation
+import com.rsddm.marketplace.features.profile.profileNavigation
 import com.rsddm.marketplace.features.shopping.icon.ShoppingCartIcon
 import com.rsddm.marketplace.features.shopping.icon.ShoppingCartIconViewModel
 import com.rsddm.marketplace.features.shopping.shoppingNavigation
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
+import session.Session
 
 @Composable
 fun App() {
@@ -30,7 +32,11 @@ fun App() {
         if (route.value.route == AppRoutes.PopBackStack.route) {
             navController.popBackStack()
         } else {
-            navController.navigate(route = route.value.route)
+            navController.navigate(route = route.value.route) {
+                route.value.from?.let {
+                    popUpTo(it.route)
+                }
+            }
         }
     }
 
@@ -38,6 +44,7 @@ fun App() {
         AppTopBar(navigator)
 
         NavHost(navController, startDestination = AppRoutes.Products.route) {
+            profileNavigation(navigator)
             productsNavigation(navigator)
             shoppingNavigation(navigator)
         }
@@ -57,8 +64,12 @@ private fun AppTopBar(navigator: Navigator) {
     when (state.value) {
         is NavigatorState.Home -> {
             TopBar(
-                title = state.value.title,
+                title = if (Session.userSession == null) "Acessar conta" else "Olá, ${Session.userSession?.name}",
+                textUnderline = true,
                 image = painterResource(id = (state.value as NavigatorState.Home).imageRes),
+                onTitleClick = {
+                    navigator.navigate(AppRoutes.Profile)
+                },
                 trailingIcon = {
                     ShoppingCartIcon(viewModel())
                 }
@@ -82,6 +93,6 @@ private fun AppTopBar(navigator: Navigator) {
             )
         }
 
-        else -> { }
+        else -> {}
     }
 }

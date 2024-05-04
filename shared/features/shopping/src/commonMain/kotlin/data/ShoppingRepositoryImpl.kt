@@ -33,7 +33,7 @@ class ShoppingRepositoryImpl(
     }
 
     override suspend fun savePurchaseLocal(shoppingOrder: ShoppingOrder) {
-        val combinedKey = ORDERS_KEY + Session.userToken
+        val combinedKey = ORDERS_KEY + Session.userSession?.token
 
         val shoppingOrders = localStorage.get<MutableList<ShoppingOrder>>(combinedKey) ?: mutableListOf()
         shoppingOrders.add(shoppingOrder)
@@ -42,13 +42,13 @@ class ShoppingRepositoryImpl(
     }
 
     override suspend fun getOrders() : List<ShoppingOrder> {
-        val combinedKey = ORDERS_KEY + Session.userToken
+        val combinedKey = ORDERS_KEY + Session.userSession?.token
 
         return localStorage.get<List<ShoppingOrder>>(combinedKey) ?: listOf()
     }
 
     override suspend fun saveShoppingCart(products: List<ShoppingCartProduct>) {
-        val combinedKey = SHOPPING_CART_KEY + Session.userToken
+        val combinedKey = SHOPPING_CART_KEY + Session.userSession?.token
 
         ShoppingCartSession.state.collect {
             localStorage.save(combinedKey, it)
@@ -56,7 +56,7 @@ class ShoppingRepositoryImpl(
     }
 
     override suspend fun getShoppingCart(): List<ShoppingCartProduct> {
-        val combinedKey = SHOPPING_CART_KEY + Session.userToken
+        val combinedKey = SHOPPING_CART_KEY + Session.userSession?.token
 
         return localStorage.get<List<ShoppingCartProduct>>(combinedKey) ?: listOf()
     }
