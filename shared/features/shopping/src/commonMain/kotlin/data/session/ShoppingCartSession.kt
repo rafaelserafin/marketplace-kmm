@@ -9,29 +9,43 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 
 object ShoppingCartSession {
+
     private val _state = MutableSharedFlow<List<ShoppingCartProduct>>(10)
     val state: SharedFlow<List<ShoppingCartProduct>> = _state.asSharedFlow()
 
     internal fun remove(shoppingCartProduct: ShoppingCartProduct) {
-
-    }
-
-    suspend fun add(shoppingCartProduct: ShoppingCartProduct) {
         val products =
-            if (_state.replayCache.isEmpty()) mutableListOf() else _state.replayCache.last().toMutableList()
+            if (_state.replayCache.isEmpty()) mutableListOf() else _state.replayCache.last()
+                .toMutableList()
         val product = products.firstOrNull { item -> item.name == shoppingCartProduct.name }
 
         if (product != null) {
-            products.remove(product)
-            products.add(
-                product.copy(
-                    quantity = product.quantity + 1
-                )
-            )
+            product.quantity -= shoppingCartProduct.quantity
+
+            if (product.quantity <= 0) {
+                products.remove(product)
+            }
+        }
+
+        _state.tryEmit(products)
+    }
+
+    internal fun add(shoppingCartProduct: ShoppingCartProduct) {
+        val products =
+            if (_state.replayCache.isEmpty()) mutableListOf() else _state.replayCache.last()
+                .toMutableList()
+        val product = products.firstOrNull { item -> item.name == shoppingCartProduct.name }
+
+        if (product != null) {
+            product.quantity += shoppingCartProduct.quantity
         } else {
             products.add(shoppingCartProduct)
         }
 
+        _state.tryEmit(products)
+    }
+
+    internal fun addAll(products: List<ShoppingCartProduct>) {
         _state.tryEmit(products)
     }
 }

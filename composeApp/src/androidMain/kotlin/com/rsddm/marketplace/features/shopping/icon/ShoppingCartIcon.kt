@@ -1,4 +1,4 @@
-package com.rsddm.marketplace.features.shoppingCart.icon
+package com.rsddm.marketplace.features.shopping.icon
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing

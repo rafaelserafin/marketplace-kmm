@@ -1,18 +1,18 @@
-package com.rsddm.marketplace.features.shoppingCart
+package com.rsddm.marketplace.features.shopping
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.rsddm.marketplace.features.shoppingCart.shoppingCart.ShoppingCartScreen
-import com.rsddm.marketplace.features.shoppingCart.shoppingCart.ShoppingCartViewModel
+import com.rsddm.marketplace.features.shopping.shoppingCart.ShoppingCartScreen
+import com.rsddm.marketplace.features.shopping.shoppingCart.ShoppingCartViewModel
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.Route
 
-fun NavGraphBuilder.shoppingCartNavigation(navigator: Navigator) {
+fun NavGraphBuilder.shoppingNavigation(navigator: Navigator) {
     navigation(
-        route = AppRoutes.ShoppingCart.route,
+        route = AppRoutes.Shopping.route,
         startDestination = ShoppingCartRoutes.ShoppingCartProducts.route
     ) {
         composable(route = ShoppingCartRoutes.ShoppingCartProducts.route) {
@@ -28,5 +28,5 @@ fun NavGraphBuilder.shoppingCartNavigation(navigator: Navigator) {
 }
 
 sealed class ShoppingCartRoutes(route: String) : Route(route) {
-    data object ShoppingCartProducts : ShoppingCartRoutes("shopping_cart_products")
+    data object ShoppingCartProducts : ShoppingCartRoutes("shopping_cart")
 }

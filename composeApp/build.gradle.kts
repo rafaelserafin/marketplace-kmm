@@ -38,7 +38,7 @@ kotlin {
             implementation(projects.shared.core)
             implementation(projects.shared.features.designSystem)
             implementation(projects.shared.features.products)
-            implementation(projects.shared.features.shoppingCart)
+            implementation(projects.shared.features.shopping)
         }
     }
 }

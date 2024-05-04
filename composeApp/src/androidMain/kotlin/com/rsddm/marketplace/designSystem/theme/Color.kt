@@ -14,3 +14,6 @@ val Orange = Color(0xFFFF6200)
 val OrangeVariant = Color(0xFFe55800)
 val Blue = Color(0xFF000066)
 val BlueVariant = Color(0xFF000d3c)
+
+val Green = Color(0xFFAEEA9A)
+val Red = Color(0xFFAC3931)

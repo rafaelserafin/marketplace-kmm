@@ -1,10 +1,18 @@
 <resources>
     <string name="app_name">Marketplace</string>
 
+    <string name="products">Produtos</string>
+    <string name="see_more">ver mais</string>
+    <string name="see_less">ver menos</string>
+    <string name="description">Descrição</string>
+    <string name="buy">Comprar</string>
+    <string name="characteristics">Caracteristicas</string>
+    <string name="delivery">Entrega</string>
+    <string name="ops">Ops</string>
+
 <!-- Product Detail -->
     <string name="products_detail">Detalhes</string>
     <string name="related_products">Você também pode gostar</string>
-    <string name="buy">Comprar</string>
     <string name="add_to_cart">Adicionar ao carrinho</string>
 
 <!-- Product Search -->
@@ -12,4 +20,11 @@
 
 <!-- Shopping Cart -->
     <string name="shopping_cart">Carrinho de compras</string>
+    <string name="shopping_cart_empty">Seu carrinho de compras está vazio, que tal adicionar alguns itens?</string>
+    <string name="finalizingShoppingOrder">Finalizando sua compra</string>
+    <string name="cart_summary">Resumo do carrinho</string>
+    <string name="total_amount">Valor total:</string>
+    <string name="quantity_of_items">Quantiadde de itens:</string>
+    <string name="finalize_purchase">Finalizar compra</string>
+    <string name="try_again">Tentar novamente</string>
 </resources>

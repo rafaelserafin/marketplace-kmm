@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class ShoppingCartProduct(
     val name: String,
     val price: String,
-    val quantity: Int = 1
+    var quantity: Int = 1
 )

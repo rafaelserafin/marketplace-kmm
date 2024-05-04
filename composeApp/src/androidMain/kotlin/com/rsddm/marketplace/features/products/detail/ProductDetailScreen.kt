@@ -150,7 +150,7 @@ private fun ProductBody(
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Entrega",
+            text = stringResource(R.string.delivery),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold
         )
@@ -209,7 +209,7 @@ private fun ProductBody(
 @Composable
 private fun ProductCharacteristics(list: List<ProductSpec>) {
     Text(
-        text = "Caracteristicas",
+        text = stringResource(R.string.characteristics),
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold
     )
@@ -245,7 +245,7 @@ private fun Description(text: String) {
     val maxLines = remember { mutableIntStateOf(5) }
 
     Text(
-        text = "Descrição",
+        text = stringResource(R.string.description),
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold
     )
@@ -258,7 +258,7 @@ private fun Description(text: String) {
     )
 
     Text(
-        text = if (maxLines.intValue > 5) "ver menos" else "ver mais",
+        text = if (maxLines.intValue > 5) stringResource(R.string.see_less) else stringResource(R.string.see_more),
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.tertiary,

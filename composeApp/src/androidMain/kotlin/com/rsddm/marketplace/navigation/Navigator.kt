@@ -4,22 +4,21 @@ import com.rsddm.marketplace.features.products.ProductsRoutes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 sealed class NavigatorState(open val title: String) {
-    data object Setup : NavigatorState("welcome")
+    data object None : NavigatorState("welcome")
     data class Home(override val title: String, val imageRes: Int) : NavigatorState(title)
     data class Navigation(override val title: String) : NavigatorState(title)
     data class CleanNavigation(override val title: String) : NavigatorState(title)
 }
 
 class Navigator {
-    private var _route = MutableStateFlow(ProductsRoutes.List.route)
-    var route: StateFlow<String> = _route.asStateFlow()
+    private var _route = MutableStateFlow<Route>(ProductsRoutes.List)
+    var route: StateFlow<Route> = _route.asStateFlow()
 
-    private var _state = MutableStateFlow<NavigatorState>(NavigatorState.Setup)
+    private var _state = MutableStateFlow<NavigatorState>(NavigatorState.None)
     var state: StateFlow<NavigatorState> = _state.asStateFlow()
 
     fun setState(navigatorState: NavigatorState) {
@@ -27,18 +26,25 @@ class Navigator {
     }
 
     fun navigate(route: Route) {
-        _route.value = route.route
+        // Generate a new RouteId
+        _route.value = object : Route(route.route) { }
     }
 
     fun navigate(route: Route, vararg params: String) {
         val raw = route.route.split("/").first()
 
-        _route.value = "$raw${params.joinToString { "/$it" }}"
+        // Generate a new RouteId
+        _route.value = object : Route("$raw${params.joinToString { "/$it" }}") { }
     }
 
     inline fun <reified T> navigate(route: Route, `object`: T) {
         val param = Json.encodeToString(`object`)
 
         navigate(route, param)
+    }
+
+    fun popBackStack() {
+        // Generate a new RouteId
+        _route.value = object : Route(AppRoutes.PopBackStack.route) { }
     }
 }

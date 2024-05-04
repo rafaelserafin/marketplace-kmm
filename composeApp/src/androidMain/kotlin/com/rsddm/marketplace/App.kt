@@ -8,14 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.rsddm.marketplace.designSystem.components.TopBar
 import com.rsddm.marketplace.features.products.productsNavigation
-import com.rsddm.marketplace.features.shoppingCart.icon.ShoppingCartIcon
-import com.rsddm.marketplace.features.shoppingCart.icon.ShoppingCartIconViewModel
-import com.rsddm.marketplace.features.shoppingCart.shoppingCartNavigation
+import com.rsddm.marketplace.features.shopping.icon.ShoppingCartIcon
+import com.rsddm.marketplace.features.shopping.icon.ShoppingCartIconViewModel
+import com.rsddm.marketplace.features.shopping.shoppingNavigation
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
@@ -27,24 +26,26 @@ fun App() {
 
     val route = navigator.route.collectAsStateWithLifecycle()
 
-    LaunchedEffect(route.value) {
-        if (navController.currentDestination?.route != route.value) {
-            navController.navigate(route = route.value)
+    LaunchedEffect(route.value.routeID) {
+        if (route.value.route == AppRoutes.PopBackStack.route) {
+            navController.popBackStack()
+        } else {
+            navController.navigate(route = route.value.route)
         }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        AppTopBar(navigator, navController)
+        AppTopBar(navigator)
 
         NavHost(navController, startDestination = AppRoutes.Products.route) {
             productsNavigation(navigator)
-            shoppingCartNavigation(navigator)
+            shoppingNavigation(navigator)
         }
     }
 }
 
 @Composable
-private fun AppTopBar(navigator: Navigator, navController: NavController) {
+private fun AppTopBar(navigator: Navigator) {
     val state = navigator.state.collectAsStateWithLifecycle()
 
     val shoppingCartIconViewModel: ShoppingCartIconViewModel = viewModel(
@@ -67,7 +68,7 @@ private fun AppTopBar(navigator: Navigator, navController: NavController) {
         is NavigatorState.Navigation -> {
             TopBar(
                 title = state.value.title,
-                onBackPressed = { navController.popBackStack() },
+                onBackPressed = { navigator.popBackStack() },
                 trailingIcon = {
                     ShoppingCartIcon(shoppingCartIconViewModel)
                 }
@@ -77,10 +78,10 @@ private fun AppTopBar(navigator: Navigator, navController: NavController) {
         is NavigatorState.CleanNavigation -> {
             TopBar(
                 title = state.value.title,
-                onBackPressed = { navController.popBackStack() }
+                onBackPressed = { navigator.popBackStack() }
             )
         }
 
-        else -> {}
+        else -> { }
     }
 }

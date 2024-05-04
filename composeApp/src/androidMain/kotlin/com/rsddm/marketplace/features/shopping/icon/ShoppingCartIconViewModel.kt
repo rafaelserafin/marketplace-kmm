@@ -1,14 +1,12 @@
-package com.rsddm.marketplace.features.shoppingCart.icon
+package com.rsddm.marketplace.features.shopping.icon
 
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
-import com.rsddm.marketplace.features.products.detail.ProductDetailViewModel
-import com.rsddm.marketplace.features.shoppingCart.ShoppingCartRoutes
+import com.rsddm.marketplace.features.shopping.ShoppingCartRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import data.session.ShoppingCartSession
-import domain.entities.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
