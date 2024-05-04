@@ -69,42 +69,40 @@ import domain.entities.ShoppingCartProduct
 import kotlinx.coroutines.delay
 
 @Composable
-fun ShoppingCartScreen(viewModel: ShoppingCartViewModel) {
-
-    val state = viewModel.state.collectAsStateWithLifecycle()
+fun ShoppingCartScreen(uiState: ShoppingCart.UIState, actionBundle: ShoppingCart.ActionBundle) {
 
     val title = stringResource(R.string.shopping_cart)
-    LaunchedEffect(state.value) {
-        viewModel.setupTopBar(title)
+    LaunchedEffect(uiState) {
+        actionBundle.setupTopBar(title)
     }
 
-    SimpleAnimatedVisibility(state.value is ShoppingCartUIState.Empty) {
+    SimpleAnimatedVisibility(uiState is ShoppingCart.UIState.Empty) {
         Empty()
     }
 
-    SimpleAnimatedVisibility(state.value is ShoppingCartUIState.FinalizingPurchase) {
+    SimpleAnimatedVisibility(uiState is ShoppingCart.UIState.FinalizingPurchase) {
         FinalizingPurchase()
     }
 
-    SimpleAnimatedVisibility(state.value is ShoppingCartUIState.OrderSuccess) {
+    SimpleAnimatedVisibility(uiState is ShoppingCart.UIState.OrderSuccess) {
         OrderSuccess()
     }
 
-    SimpleAnimatedVisibility(state.value is ShoppingCartUIState.OrderError) {
-        (state.value as? ShoppingCartUIState.OrderError)?.let {
+    SimpleAnimatedVisibility(uiState is ShoppingCart.UIState.OrderError) {
+        (uiState as? ShoppingCart.UIState.OrderError)?.let {
             OrderError(it.error, it.actionName, it.action)
         }
     }
 
     SimpleAnimatedVisibility(
-        state.value is ShoppingCartUIState.CheckIn
+        uiState is ShoppingCart.UIState.CheckIn
     ) {
-        (state.value as? ShoppingCartUIState.CheckIn)?.let {
+        (uiState as? ShoppingCart.UIState.CheckIn)?.let {
             ShoppingCart(
                 it.products,
                 it.totalAmount,
-                viewModel::updateProductQuantity,
-                viewModel::onBuyClick
+                actionBundle::updateProductQuantity,
+                actionBundle::onBuyClick
             )
         }
     }

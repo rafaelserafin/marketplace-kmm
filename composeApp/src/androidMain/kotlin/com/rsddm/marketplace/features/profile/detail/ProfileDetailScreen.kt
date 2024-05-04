@@ -9,8 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun ProfileDetailScreen(uiState: ProfileDetailUIState,
-                        setupTopBar: (String) -> Unit) {
+fun ProfileDetailScreen(
+    uiState: ProfileDetail.UIState,
+    actionBundle: ProfileDetail.ActionBundle
+) {
 
     val title = ""
     LaunchedEffect(true) {

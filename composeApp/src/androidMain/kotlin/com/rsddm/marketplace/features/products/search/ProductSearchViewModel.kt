@@ -13,29 +13,29 @@ import domain.entities.Search
 import domain.useCases.SearchProductsUseCase
 import domain.useCases.SearchProductsUseCaseFactory
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseViewModel(navigator) {
+class ProductSearchViewModel(var query: String, navigator: Navigator) :
+    BaseViewModel<ProductSearch.UIState, ProductSearch.ActionBundle>(navigator),
+    ProductSearch.ActionBundle {
 
     private var offset = 0
     private var endOfList = false
     private val searchProductsUseCase: SearchProductsUseCase by SearchProductsUseCaseFactory()
 
-    private val _uiState: MutableStateFlow<ProductSearchUIState> =
-        MutableStateFlow(ProductSearchUIState.Loading)
-    val uiState: StateFlow<ProductSearchUIState> = _uiState
+    override val _uiState: MutableStateFlow<ProductSearch.UIState> =
+        MutableStateFlow(ProductSearch.UIState.Loading)
+    override val actionBundle: ProductSearch.ActionBundle = this
 
     init {
-
         search(query)
     }
 
-    fun onProductClick(product: Product) {
+    override fun onProductClick(product: Product) {
         navigator.navigate(ProductsRoutes.Detail, product)
     }
 
-    fun search(query: String) {
+    override fun search(query: String) {
         val isLoadMore = this.query == query
         if (isLoadMore) {
             offset += 10
@@ -43,7 +43,7 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseView
             offset = 0
             this.query = query
             this.endOfList = false
-            _uiState.value = ProductSearchUIState.Loading
+            setUIState(ProductSearch.UIState.Loading)
         }
 
         if (endOfList) return
@@ -56,20 +56,26 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) : BaseView
                 )
             ) {
                 when (it) {
-                    is Resource.Success -> if (uiState.value is ProductSearchUIState.Searching && isLoadMore) {
+                    is Resource.Success -> if (uiState.value is ProductSearch.UIState.Searching && isLoadMore) {
                         endOfList = it.data.size < 10
 
-                        _uiState.emit(
-                            ProductSearchUIState.Searching(
-                                (uiState.value as ProductSearchUIState.Searching).products + it.data,
+                        setUIState(
+                            ProductSearch.UIState.Searching(
+                                query,
+                                (uiState.value as ProductSearch.UIState.Searching).products + it.data,
                                 loadMore = !endOfList
                             )
                         )
                     } else {
-                        _uiState.emit(ProductSearchUIState.Searching(it.data))
+                        setUIState(ProductSearch.UIState.Searching(query, it.data))
                     }
 
-                    is Resource.Error -> _uiState.emit(ProductSearchUIState.Searching(listOf()))
+                    is Resource.Error -> setUIState(
+                        ProductSearch.UIState.Searching(
+                            query,
+                            listOf()
+                        )
+                    )
                 }
             }
         }

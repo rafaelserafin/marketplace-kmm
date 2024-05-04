@@ -15,8 +15,11 @@
     <string name="related_products">Você também pode gostar</string>
     <string name="add_to_cart">Adicionar ao carrinho</string>
 
+
+
 <!-- Product Search -->
     <string name="product_search">Buscar produto</string>
+    <string name="search">Pesquisar</string>
 
 <!-- Shopping Cart -->
     <string name="shopping_cart">Carrinho de compras</string>

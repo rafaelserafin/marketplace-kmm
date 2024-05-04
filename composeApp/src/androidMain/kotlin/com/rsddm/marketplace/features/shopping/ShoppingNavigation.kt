@@ -1,5 +1,6 @@
 package com.rsddm.marketplace.features.shopping
 
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -22,7 +23,10 @@ fun NavGraphBuilder.shoppingNavigation(navigator: Navigator) {
                 )
             )
 
-            ShoppingCartScreen(viewModel)
+            ShoppingCartScreen(
+                viewModel.uiState.collectAsStateWithLifecycle().value,
+                viewModel.actionBundle
+            )
         }
     }
 }

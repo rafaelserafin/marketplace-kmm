@@ -25,13 +25,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
+class ShoppingCartViewModel(navigator: Navigator) :
+    BaseViewModel<ShoppingCart.UIState, ShoppingCart.ActionBundle>(navigator),
+    ShoppingCart.ActionBundle {
 
     private val updateShoppingCartProductUseCase: UpdateShoppingCartProductUseCase by UpdateShoppingCartProductUseCaseFactory()
     private val finalizePurchaseUseCase: FinalizePurchaseUseCase by FinalizePurchaseUseCaseFactory()
 
-    private val _state = MutableStateFlow<ShoppingCartUIState>(ShoppingCartUIState.Empty)
-    val state: StateFlow<ShoppingCartUIState> = _state.asStateFlow()
+    override val _uiState = MutableStateFlow<ShoppingCart.UIState>(ShoppingCart.UIState.Empty)
+    override val actionBundle: ShoppingCart.ActionBundle = this
 
     private var products: List<ShoppingCartProduct> = listOf()
 
@@ -39,9 +41,9 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
         viewModelScope.launch {
             ShoppingCartSession.state.collect {
                 if (it.isEmpty()) {
-                    _state.value = ShoppingCartUIState.Empty
+                    setUIState(ShoppingCart.UIState.Empty)
                 } else {
-                    _state.value = ShoppingCartUIState.CheckIn(it, calculateTotalAmount(it))
+                    setUIState(ShoppingCart.UIState.CheckIn(it, calculateTotalAmount(it)))
                 }
             }
         }
@@ -61,7 +63,7 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
         return totalAmount.toStringCurrency()
     }
 
-    fun updateProductQuantity(product: ShoppingCartProduct, quantity: Int) {
+    override fun updateProductQuantity(product: ShoppingCartProduct, quantity: Int) {
         viewModelScope.launch {
             updateShoppingCartProductUseCase.execute(product) {
 
@@ -69,9 +71,9 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
         }
     }
 
-    fun onBuyClick() {
+    override fun onBuyClick() {
         viewModelScope.launch {
-            _state.value = ShoppingCartUIState.FinalizingPurchase
+            setUIState(ShoppingCart.UIState.FinalizingPurchase)
 
             finalizePurchaseUseCase.execute(
                 ShoppingOrder(
@@ -82,10 +84,10 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
                     System.currentTimeMillis()
                 )
             ) {
-                when (it) {
-                    is Resource.Error -> _state.value =
+                val uiState = when (it) {
+                    is Resource.Error ->
                         when (it.exception) {
-                            is UnauthorizedException -> ShoppingCartUIState.OrderError(
+                            is UnauthorizedException -> ShoppingCart.UIState.OrderError(
                                 it.exception?.message.orEmpty(),
                                 "ir para o login"
                             ) {
@@ -93,58 +95,57 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
                             }
 
                             is StockLackException,
-                            is TransactionException -> ShoppingCartUIState.OrderError(
+                            is TransactionException -> ShoppingCart.UIState.OrderError(
                                 it.exception?.message.orEmpty(),
                                 "revisar pedido"
                             ) {
-                                _state.value = ShoppingCartUIState.CheckIn(
+                                ShoppingCart.UIState.CheckIn(
                                     products,
                                     calculateTotalAmount(products)
                                 )
                             }
 
-                            else -> ShoppingCartUIState.OrderError(
+                            else -> ShoppingCart.UIState.OrderError(
                                 it.exception?.message.orEmpty(),
                                 "tentar novamente"
                             ) {
-                                _state.value = ShoppingCartUIState.CheckIn(
+                                ShoppingCart.UIState.CheckIn(
                                     products,
                                     calculateTotalAmount(products)
                                 )
                             }
                         }
 
-                    is Resource.Success -> ShoppingCartUIState.OrderSuccess(it.data)
+                    is Resource.Success -> ShoppingCart.UIState.OrderSuccess(it.data)
                 }
+
+                setUIState(uiState)
             }
-
-
         }
-
     }
 
     override fun setupTopBar(title: String) {
-        when (_state.value) {
-            is ShoppingCartUIState.CheckIn -> navigator.setState(
+        when (uiState.value) {
+            is ShoppingCart.UIState.CheckIn -> navigator.setState(
                 navigatorState = NavigatorState.CleanNavigation(
                     title
                 )
             )
 
-            ShoppingCartUIState.Empty -> navigator.setState(
+            ShoppingCart.UIState.Empty -> navigator.setState(
                 navigatorState = NavigatorState.CleanNavigation(
                     title
                 )
             )
 
-            ShoppingCartUIState.FinalizingPurchase -> navigator.setState(
+            ShoppingCart.UIState.FinalizingPurchase -> navigator.setState(
                 navigatorState = NavigatorState.CleanNavigation(
                     title
                 )
             )
 
-            is ShoppingCartUIState.OrderError -> navigator.setState(navigatorState = NavigatorState.None)
-            is ShoppingCartUIState.OrderSuccess -> navigator.setState(navigatorState = NavigatorState.None)
+            is ShoppingCart.UIState.OrderError -> navigator.setState(navigatorState = NavigatorState.None)
+            is ShoppingCart.UIState.OrderSuccess -> navigator.setState(navigatorState = NavigatorState.None)
         }
     }
 
@@ -159,4 +160,5 @@ class ShoppingCartViewModel(navigator: Navigator) : BaseViewModel(navigator) {
             }
         }
     }
+
 }

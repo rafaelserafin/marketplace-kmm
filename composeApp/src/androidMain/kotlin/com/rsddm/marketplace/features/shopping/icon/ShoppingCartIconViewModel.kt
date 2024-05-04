@@ -8,28 +8,30 @@ import com.rsddm.marketplace.features.shopping.ShoppingCartRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import data.session.ShoppingCartSession
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ShoppingCartIconViewModel(navigator: Navigator) : BaseViewModel(navigator) {
+class ShoppingCartIconViewModel(navigator: Navigator) :
+    BaseViewModel<ShoppingCartIcon.UIState, ShoppingCartIcon.ActionBundle>(navigator),
+    ShoppingCartIcon.ActionBundle {
 
-    private val _badgeCount = MutableStateFlow(0)
-    val badgeCount: StateFlow<Int> = _badgeCount.asStateFlow()
+    override val _uiState: MutableStateFlow<ShoppingCartIcon.UIState> = MutableStateFlow(
+        ShoppingCartIcon.UIState.Badge(0)
+    )
+    override val actionBundle: ShoppingCartIcon.ActionBundle = this
 
     init {
         viewModelScope.launch {
             ShoppingCartSession.state.collect {
-                _badgeCount.value = it.size
+                setUIState(ShoppingCartIcon.UIState.Badge(it.size))
             }
         }
     }
 
-    fun onShoppingCartClick() {
+    override fun onShoppingCartClick() {
         navigator.navigate(ShoppingCartRoutes.ShoppingCartProducts)
     }
 
-    override fun setupTopBar(title: String) { }
+    override fun setupTopBar(title: String) { /* Do nothing here */ }
 
     companion object {
         fun provideFactory(

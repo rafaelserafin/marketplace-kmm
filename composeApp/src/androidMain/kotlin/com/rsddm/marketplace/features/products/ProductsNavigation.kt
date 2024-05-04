@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.rsddm.marketplace.navigation.getObject
 import com.rsddm.marketplace.features.products.detail.ProductDetailScreen
-import com.rsddm.marketplace.features.products.detail.ProductDetailViewModel
+import com.rsddm.marketplace.features.products.detail.ProductDetailsViewModel
 import com.rsddm.marketplace.features.products.list.ProductListViewModel
 import com.rsddm.marketplace.features.products.list.ProductsHomeScreen
 import com.rsddm.marketplace.features.products.search.ProductSearchScreen
@@ -27,7 +27,10 @@ fun NavGraphBuilder.productsNavigation(navigator: Navigator) {
                 factory = ProductListViewModel.provideFactory(navigator)
             )
 
-            ProductsHomeScreen(viewModel)
+            ProductsHomeScreen(
+                viewModel.uiState.collectAsStateWithLifecycle().value,
+                viewModel.actionBundle
+            )
         }
 
         composable(ProductsRoutes.Search.route) {
@@ -37,15 +40,18 @@ fun NavGraphBuilder.productsNavigation(navigator: Navigator) {
                 )
             )
 
-            ProductSearchScreen(viewModel)
+            ProductSearchScreen(
+                viewModel.uiState.collectAsStateWithLifecycle().value,
+                viewModel.actionBundle
+            )
         }
 
         composable(ProductsRoutes.Detail.route) {
             val product = it.arguments?.getObject<Product>("product")
 
             product?.let {
-                val viewModel: ProductDetailViewModel = viewModel(
-                    factory = ProductDetailViewModel.provideFactory(
+                val viewModel: ProductDetailsViewModel = viewModel(
+                    factory = ProductDetailsViewModel.provideFactory(
                         product,
                         navigator
                     )
@@ -53,10 +59,7 @@ fun NavGraphBuilder.productsNavigation(navigator: Navigator) {
 
                 ProductDetailScreen(
                     viewModel.uiState.collectAsStateWithLifecycle().value,
-                    viewModel::onBuyClick,
-                    viewModel::onAddToCartClick,
-                    viewModel::onProductClick,
-                    viewModel::setupTopBar
+                    viewModel.actionBundle
                 )
             }
         }
@@ -66,5 +69,5 @@ fun NavGraphBuilder.productsNavigation(navigator: Navigator) {
 sealed class ProductsRoutes(route: String) : Route(route) {
     data object List : ProductsRoutes("products_list")
     data object Search : ProductsRoutes("products_search/{search}")
-    data object Detail : ProductsRoutes("products_detail/{product}")
+    data object Detail : ProductsRoutes("products_details/{product}")
 }

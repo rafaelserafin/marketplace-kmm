@@ -11,7 +11,6 @@ import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
-import data.session.ShoppingCartSession
 import domain.entities.Product
 import domain.entities.ProductDetail
 import domain.entities.ShoppingCartProduct
@@ -23,22 +22,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-open class ProductDetailViewModel(product: Product, navigator: Navigator) :
-    BaseViewModel(navigator) {
+class ProductDetailsViewModel(product: Product, navigator: Navigator) :
+    BaseViewModel<ProductDetails.UIState,
+            ProductDetails.ActionBundle>(navigator),
+    ProductDetails.ActionBundle {
 
     private val getProductDetailUseCase: GetProductDetailUseCase by GetProductDetailUseCaseFactory()
     private val updateShoppingCartProductUseCase: UpdateShoppingCartProductUseCase by UpdateShoppingCartProductUseCaseFactory()
 
-    private val _uiState: MutableStateFlow<ProductDetailUIState> =
-        MutableStateFlow(ProductDetailUIState.Loading(ProductDetail(product = product)))
-    val uiState: StateFlow<ProductDetailUIState> = _uiState
+    override val _uiState: MutableStateFlow<ProductDetails.UIState> = MutableStateFlow(ProductDetails.UIState.Loading(ProductDetail(product = product)))
+    override val actionBundle: ProductDetails.ActionBundle = this
 
     init {
         viewModelScope.launch {
             getProductDetailUseCase.execute(product) {
                 when (it) {
                     is Resource.Error -> throw Exception()
-                    is Resource.Success -> _uiState.value = ProductDetailUIState.Detailed(
+                    is Resource.Success -> _uiState.value = ProductDetails.UIState.Detailed(
                         it.data.copy(
                             installment = "em até 12x de ${(product.price.toDoubleFromCurrency() / 12).toStringCurrency()}"
                         )
@@ -48,27 +48,31 @@ open class ProductDetailViewModel(product: Product, navigator: Navigator) :
         }
     }
 
-    fun onProductClick(product: Product) {
+    override fun onProductClick(product: Product) {
         navigator.navigate(ProductsRoutes.Detail, product)
     }
 
-    fun onBuyClick(productDetail: ProductDetail) {
+    override fun onBuyClick(productDetail: ProductDetail) {
         viewModelScope.launch {
-            updateShoppingCartProductUseCase.execute(ShoppingCartProduct(
-                productDetail.product.name,
-                productDetail.product.price,
-            )) { }
+            updateShoppingCartProductUseCase.execute(
+                ShoppingCartProduct(
+                    productDetail.product.name,
+                    productDetail.product.price,
+                )
+            ) { }
         }
 
         navigator.navigate(AppRoutes.Shopping)
     }
 
-    fun onAddToCartClick(productDetail: ProductDetail) {
+    override fun onAddToCartClick(productDetail: ProductDetail) {
         viewModelScope.launch {
-            updateShoppingCartProductUseCase.execute(ShoppingCartProduct(
-                productDetail.product.name,
-                productDetail.product.price,
-            )) { }
+            updateShoppingCartProductUseCase.execute(
+                ShoppingCartProduct(
+                    productDetail.product.name,
+                    productDetail.product.price,
+                )
+            ) { }
         }
     }
 
@@ -82,7 +86,7 @@ open class ProductDetailViewModel(product: Product, navigator: Navigator) :
             navigator: Navigator,
         ) = viewModelFactory {
             initializer {
-                ProductDetailViewModel(
+                ProductDetailsViewModel(
                     product = product,
                     navigator = navigator
                 )

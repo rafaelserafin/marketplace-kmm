@@ -8,8 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.rsddm.marketplace.R
 import com.rsddm.marketplace.designSystem.components.Loading
 import com.rsddm.marketplace.designSystem.components.OnProductClick
 import com.rsddm.marketplace.designSystem.components.OnSearch
@@ -18,25 +20,26 @@ import com.rsddm.marketplace.designSystem.components.SearchBar
 import domain.entities.ProductsCategory
 
 @Composable
-fun ProductsHomeScreen(viewModel: ProductListViewModel) {
+fun ProductsHomeScreen(
+    uiState: ProductList.UIState,
+    actionBundle: ProductList.ActionBundle
+) {
 
     LaunchedEffect(true) {
-        viewModel.setupTopBar("")
+        actionBundle.setupTopBar("")
     }
 
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    when (uiState.value) {
-        is ProductListUIState.Listing -> {
+    when (uiState) {
+        is ProductList.UIState.Listing -> {
             List(
-                (uiState.value as ProductListUIState.Listing).categories,
-                onSearch = viewModel::onSearch,
-                onProductClick = viewModel::onProductClick
+                uiState.categories,
+                onSearch = actionBundle::onSearch,
+                onProductClick = actionBundle::onProductClick
             )
         }
 
-        is ProductListUIState.Error -> {}
-        is ProductListUIState.Loading -> Loading()
+        is ProductList.UIState.Error -> {}
+        is ProductList.UIState.Loading -> Loading()
     }
 }
 
@@ -44,7 +47,7 @@ fun ProductsHomeScreen(viewModel: ProductListViewModel) {
 private fun List(categories: List<ProductsCategory>, onSearch: OnSearch, onProductClick: OnProductClick) {
     Column {
         SearchBar(
-            hint = "Pesquisar",
+            hint = stringResource(R.string.search),
             onSearch = onSearch,
             backgroundColor = MaterialTheme.colorScheme.primary,
             backgroundContrast = MaterialTheme.colorScheme.onPrimary

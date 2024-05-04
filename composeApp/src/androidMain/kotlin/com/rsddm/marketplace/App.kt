@@ -3,6 +3,7 @@ package com.rsddm.marketplace
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -71,7 +72,10 @@ private fun AppTopBar(navigator: Navigator) {
                     navigator.navigate(AppRoutes.Profile)
                 },
                 trailingIcon = {
-                    ShoppingCartIcon(viewModel())
+                    ShoppingCartIcon(
+                        shoppingCartIconViewModel.uiState.collectAsStateWithLifecycle().value,
+                        shoppingCartIconViewModel.actionBundle
+                    )
                 }
             )
         }
@@ -81,7 +85,10 @@ private fun AppTopBar(navigator: Navigator) {
                 title = state.value.title,
                 onBackPressed = { navigator.popBackStack() },
                 trailingIcon = {
-                    ShoppingCartIcon(shoppingCartIconViewModel)
+                    ShoppingCartIcon(
+                        shoppingCartIconViewModel.uiState.collectAsStateWithLifecycle().value,
+                        shoppingCartIconViewModel.actionBundle
+                    )
                 }
             )
         }

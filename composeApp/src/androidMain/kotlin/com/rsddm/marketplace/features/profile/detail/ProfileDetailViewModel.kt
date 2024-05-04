@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class ProfileDetailViewModel(navigator: Navigator) : BaseViewModel(navigator) {
+class ProfileDetailViewModel(navigator: Navigator) :
+    BaseViewModel<ProfileDetail.UIState, ProfileDetail.ActionBundle>(navigator),
+    ProfileDetail.ActionBundle {
 
-    private val _state = MutableStateFlow<ProfileDetailUIState>(ProfileDetailUIState.Default)
-    val state: StateFlow<ProfileDetailUIState> = _state.asStateFlow()
+    override val _uiState = MutableStateFlow<ProfileDetail.UIState>(ProfileDetail.UIState.Default)
+    override val actionBundle: ProfileDetail.ActionBundle = this
 
     override fun setupTopBar(title: String) {
         navigator.setState(NavigatorState.Navigation(title))

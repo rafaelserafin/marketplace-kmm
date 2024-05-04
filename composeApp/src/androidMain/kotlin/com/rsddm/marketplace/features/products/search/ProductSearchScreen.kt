@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rsddm.marketplace.R
 import com.rsddm.marketplace.designSystem.components.LineThroughText
 import com.rsddm.marketplace.designSystem.components.Loading
@@ -39,21 +38,22 @@ import com.rsddm.marketplace.designSystem.components.SearchBar
 import domain.entities.Product
 
 @Composable
-fun ProductSearchScreen(viewModel: ProductSearchViewModel) {
+fun ProductSearchScreen(
+    uiState: ProductSearch.UIState,
+    actionBundle: ProductSearch.ActionBundle
+) {
     val title = stringResource(R.string.product_search)
     LaunchedEffect(true) {
-        viewModel.setupTopBar(title)
+        actionBundle.setupTopBar(title)
     }
 
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-
-    when (uiState.value) {
-        is ProductSearchUIState.Loading -> Loading()
-        is ProductSearchUIState.Searching -> Searching(
-            viewModel.query,
-            (uiState.value as ProductSearchUIState.Searching),
-            onSearch = viewModel::search,
-            onProductClick = viewModel::onProductClick
+    when (uiState) {
+        is ProductSearch.UIState.Loading -> Loading()
+        is ProductSearch.UIState.Searching -> Searching(
+            uiState.query,
+            uiState,
+            onSearch = actionBundle::search,
+            onProductClick = actionBundle::onProductClick
         )
     }
 }
@@ -61,7 +61,7 @@ fun ProductSearchScreen(viewModel: ProductSearchViewModel) {
 @Composable
 private fun Searching(
     text: String,
-    searching: ProductSearchUIState.Searching,
+    searching: ProductSearch.UIState.Searching,
     onSearch: OnSearch,
     onProductClick: OnProductClick
 ) {
@@ -82,7 +82,7 @@ private fun Searching(
     Column {
         SearchBar(
             initialText = text,
-            hint = "Pesquisar",
+            hint = stringResource(R.string.search),
             onSearch = onSearch
         )
 
@@ -125,7 +125,7 @@ private fun Product(product: Product, onProductClick: OnProductClick) {
             Column {
                 Image(
                     painter = painterResource(id = R.drawable.temp_product),
-                    contentDescription = "User Logo",
+                    contentDescription = null,
                     modifier = Modifier
                         .size(70.dp)
                         .background(MaterialTheme.colorScheme.background)

@@ -16,21 +16,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ProductListViewModel(navigator: Navigator) : BaseViewModel(navigator) {
+class ProductListViewModel(navigator: Navigator) :
+    BaseViewModel<ProductList.UIState, ProductList.ActionBundle>(navigator),
+    ProductList.ActionBundle{
 
     private val loadHomeProductsUseCase: LoadHomeProductsUseCase by LoadHomeProductsUseCaseFactory()
 
-    private val _uiState: MutableStateFlow<ProductListUIState> =
-        MutableStateFlow(ProductListUIState.Loading)
-    val uiState: StateFlow<ProductListUIState> = _uiState
+    override val _uiState: MutableStateFlow<ProductList.UIState> = MutableStateFlow(ProductList.UIState.Loading)
+    override val actionBundle: ProductList.ActionBundle = this
 
     init {
         viewModelScope.launch {
             loadHomeProductsUseCase.execute(Unit) {
                 when (it) {
-                    is Resource.Success -> _uiState.emit(ProductListUIState.Listing(it.data))
-                    is Resource.Error -> _uiState.emit(
-                        ProductListUIState.Error(
+                    is Resource.Success -> setUIState(ProductList.UIState.Listing(it.data))
+                    is Resource.Error -> setUIState(
+                        ProductList.UIState.Error(
                             it.exception?.message ?: ""
                         )
                     )
@@ -39,11 +40,11 @@ class ProductListViewModel(navigator: Navigator) : BaseViewModel(navigator) {
         }
     }
 
-    fun onProductClick(product: Product) {
+    override fun onProductClick(product: Product) {
         navigator.navigate(ProductsRoutes.Detail, product)
     }
 
-    fun onSearch(text: String) {
+    override fun onSearch(text: String) {
         navigator.navigate(ProductsRoutes.Search, text)
     }
 

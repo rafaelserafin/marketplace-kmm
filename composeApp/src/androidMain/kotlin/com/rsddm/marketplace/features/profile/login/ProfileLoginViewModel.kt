@@ -6,13 +6,17 @@ import com.rsddm.marketplace.core.BaseViewModel
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
-class ProfileLoginViewModel(navigator: Navigator) : BaseViewModel(navigator) {
+class ProfileLoginViewModel(navigator: Navigator) :
+    BaseViewModel<ProfileLogin.UIState, ProfileLogin.ActionBundle>(navigator),
+    ProfileLogin.ActionBundle {
 
-    private val _state = MutableStateFlow<ProfileLoginUIState>(ProfileLoginUIState.Default)
-    val state: StateFlow<ProfileLoginUIState> = _state.asStateFlow()
+    override val _uiState = MutableStateFlow<ProfileLogin.UIState>(ProfileLogin.UIState.Default)
+    override val actionBundle: ProfileLogin.ActionBundle = this
+
+    override fun login(username: String, password: String) {
+
+    }
 
     override fun setupTopBar(title: String) {
         navigator.setState(NavigatorState.CleanNavigation(title))

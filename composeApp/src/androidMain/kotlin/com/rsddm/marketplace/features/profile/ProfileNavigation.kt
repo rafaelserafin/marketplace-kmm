@@ -27,8 +27,8 @@ fun NavGraphBuilder.profileNavigation(navigator: Navigator) {
             )
 
             ProfileDetailScreen(
-                viewModel.state.collectAsStateWithLifecycle().value,
-                viewModel::setupTopBar
+                viewModel.uiState.collectAsStateWithLifecycle().value,
+                viewModel.actionBundle
             )
         }
 
@@ -38,8 +38,8 @@ fun NavGraphBuilder.profileNavigation(navigator: Navigator) {
             )
 
             ProfileLoginScreen(
-                viewModel.state.collectAsStateWithLifecycle().value,
-                viewModel::setupTopBar
+                viewModel.uiState.collectAsStateWithLifecycle().value,
+                viewModel.actionBundle
             )
         }
     }

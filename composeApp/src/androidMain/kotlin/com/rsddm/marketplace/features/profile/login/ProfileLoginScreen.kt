@@ -23,13 +23,13 @@ import com.rsddm.marketplace.R
 
 @Composable
 fun ProfileLoginScreen(
-    uiState: ProfileLoginUIState,
-    setupTopBar: (String) -> Unit
+    uiState: ProfileLogin.UIState,
+    actionBundle: ProfileLogin.ActionBundle
 ) {
 
     val title = stringResource(R.string.login)
     LaunchedEffect(true) {
-        setupTopBar(title)
+        actionBundle.setupTopBar(title)
     }
 
     Column(
