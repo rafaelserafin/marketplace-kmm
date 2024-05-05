@@ -14,7 +14,7 @@ class ProductsRepositoryImpl(
     private val localStorage: LocalStorage
 ) : ProductsRepository {
     override suspend fun getUserHighlightedProducts(): Flow<ProductsCategory> = flow {
-        api.getUserHighlightedProducts()
+        emit(api.getUserHighlightedProducts())
     }
 
     override suspend fun getMostPopularProducts(): Flow<ProductsCategory> = flow {

@@ -13,7 +13,15 @@ abstract class UseCase<I, R> {
 
     suspend fun execute(input: I, flowCollector: FlowCollector<Resource<R>>) =
         flow<Resource<R>> { emit(Resource.Success(implementation(input))) }
-            .catch { emit(Resource.Error(it)) }
+            .catch {
+                println("error")
+                println(it.message)
+                emit(Resource.Error(it)) }
             .flowOn(Dispatchers.IO)
             .collect(flowCollector)
+
+    suspend fun execute(input: I) =
+        flow<Resource<R>> { emit(Resource.Success(implementation(input))) }
+            .catch { emit(Resource.Error(it)) }
+            .flowOn(Dispatchers.IO)
 }

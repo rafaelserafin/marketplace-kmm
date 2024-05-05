@@ -8,8 +8,6 @@ import data.api.ShoppingApiImpl
 import data.session.ShoppingCartSession
 import di.CoreContainer
 import domain.entities.ShoppingCartProduct
-import domain.entities.ShoppingOrder
-import session.Session
 
 class LoadShoppingCartUseCaseFactory : Factory<LoadShoppingCartUseCase>() {
     override fun provide(): LoadShoppingCartUseCase {

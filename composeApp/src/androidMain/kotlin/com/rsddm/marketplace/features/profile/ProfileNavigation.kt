@@ -5,8 +5,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.rsddm.marketplace.features.products.list.ProductListViewModel
-import com.rsddm.marketplace.features.products.list.ProductsHomeScreen
 import com.rsddm.marketplace.features.profile.detail.ProfileDetailScreen
 import com.rsddm.marketplace.features.profile.detail.ProfileDetailViewModel
 import com.rsddm.marketplace.features.profile.login.ProfileLoginScreen
@@ -14,12 +12,12 @@ import com.rsddm.marketplace.features.profile.login.ProfileLoginViewModel
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.Route
-import session.Session
+import data.session.UserSession
 
 fun NavGraphBuilder.profileNavigation(navigator: Navigator) {
     navigation(
         route = AppRoutes.Profile.route,
-        startDestination = if (Session.userSession == null) ProfileRoutes.Login.route else ProfileRoutes.Profile.route
+        startDestination = if (UserSession.user == null) ProfileRoutes.Login.route else ProfileRoutes.Profile.route
     ) {
         composable(ProfileRoutes.Profile.route) {
             val viewModel: ProfileDetailViewModel = viewModel(

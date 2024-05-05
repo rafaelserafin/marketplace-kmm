@@ -6,15 +6,23 @@ import common.Resource
 import domain.entities.Theme
 import domain.useCases.LoadAppThemeUseCase
 import domain.useCases.LoadAppThemeUseCaseFactory
+import domain.useCases.RefreshUserSessionUseCase
+import domain.useCases.RefreshUserSessionUseCaseFactory
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class SetupViewModel : ViewModel() {
 
     private val loadAppThemeUseCase: LoadAppThemeUseCase by LoadAppThemeUseCaseFactory()
+    private val refreshUserSessionUseCase: RefreshUserSessionUseCase by RefreshUserSessionUseCaseFactory()
 
     private val _state = MutableStateFlow<SetupState>(SetupState.Splash)
     val state: StateFlow<SetupState> = _state.asStateFlow()
@@ -26,10 +34,13 @@ class SetupViewModel : ViewModel() {
     }
 
     private suspend fun setupColor() {
-        delay(2000)
+        delay(1500)
 
-        loadAppThemeUseCase.execute("varejo") {
-            _state.value = when (it) {
+        combine(
+            loadAppThemeUseCase.execute("varejo"),
+            refreshUserSessionUseCase.execute(Unit)
+        ) { themeResource, _ ->
+            _state.value = when (themeResource) {
                 is Resource.Error -> SetupState.Finish(
                     Theme(
                         primary = 0xFF000000,
@@ -43,9 +54,9 @@ class SetupViewModel : ViewModel() {
                     )
                 )
 
-                is Resource.Success -> SetupState.Finish(it.data)
+                is Resource.Success -> SetupState.Finish(themeResource.data)
             }
-        }
+        }.collect()
     }
 }
 

@@ -1,5 +1,6 @@
 package data
 
+import bridge.ModuleBridge
 import data.api.ShoppingApi
 import data.api.errors.StockLackException
 import data.api.errors.TransactionException
@@ -8,7 +9,6 @@ import data.session.ShoppingCartSession
 import domain.entities.ShoppingCartProduct
 import domain.entities.ShoppingOrder
 import kotlinx.coroutines.delay
-import session.Session
 
 private const val ORDERS_KEY = "orders_"
 private const val SHOPPING_CART_KEY = "shopping_cart_"
@@ -23,7 +23,7 @@ class ShoppingRepositoryImpl(
         val moreThenTree = shoppingOrder.products.firstOrNull { it.quantity > 3 }
 
         when {
-            !Session.isAuthenticated() -> throw UnauthorizedException()
+            ModuleBridge.profile?.isUserAuthenticated() == false -> throw UnauthorizedException()
             moreThenTree != null -> throw StockLackException(moreThenTree.name)
             shoppingOrder.products.sumOf { it.quantity } > 16 -> throw TransactionException()
             else -> return shoppingOrder.copy(
@@ -33,7 +33,7 @@ class ShoppingRepositoryImpl(
     }
 
     override suspend fun savePurchaseLocal(shoppingOrder: ShoppingOrder) {
-        val combinedKey = ORDERS_KEY + Session.userSession?.token
+        val combinedKey = ORDERS_KEY + ModuleBridge.profile?.getUserSessionToken()
 
         val shoppingOrders = localStorage.get<MutableList<ShoppingOrder>>(combinedKey) ?: mutableListOf()
         shoppingOrders.add(shoppingOrder)
@@ -42,13 +42,13 @@ class ShoppingRepositoryImpl(
     }
 
     override suspend fun getOrders() : List<ShoppingOrder> {
-        val combinedKey = ORDERS_KEY + Session.userSession?.token
+        val combinedKey = ORDERS_KEY + ModuleBridge.profile?.getUserSessionToken()
 
         return localStorage.get<List<ShoppingOrder>>(combinedKey) ?: listOf()
     }
 
     override suspend fun saveShoppingCart(products: List<ShoppingCartProduct>) {
-        val combinedKey = SHOPPING_CART_KEY + Session.userSession?.token
+        val combinedKey = SHOPPING_CART_KEY + ModuleBridge.profile?.getUserSessionToken()
 
         ShoppingCartSession.state.collect {
             localStorage.save(combinedKey, it)
@@ -56,7 +56,7 @@ class ShoppingRepositoryImpl(
     }
 
     override suspend fun getShoppingCart(): List<ShoppingCartProduct> {
-        val combinedKey = SHOPPING_CART_KEY + Session.userSession?.token
+        val combinedKey = SHOPPING_CART_KEY + ModuleBridge.profile?.getUserSessionToken()
 
         return localStorage.get<List<ShoppingCartProduct>>(combinedKey) ?: listOf()
     }

@@ -34,6 +34,7 @@ kotlin2 = "1.9.0"
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "nav_version"}
 
 # KotlinX
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx"}
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx"}
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx"}
 

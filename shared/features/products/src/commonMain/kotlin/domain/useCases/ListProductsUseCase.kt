@@ -1,6 +1,7 @@
 package domain.useCases
 
 import Factory
+import bridge.ModuleBridge
 import common.UseCase
 import data.ProductsRepository
 import data.ProductsRepositoryImpl
@@ -9,7 +10,6 @@ import di.CoreContainer
 import domain.entities.ProductsCategory
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import session.Session
 
 class LoadHomeProductsUseCaseFactory : Factory<LoadHomeProductsUseCase>() {
     override fun provide(): LoadHomeProductsUseCase {
@@ -27,7 +27,7 @@ class LoadHomeProductsUseCase(
 ) : UseCase<Unit, List<ProductsCategory>>() {
     override suspend fun implementation(input: Unit): List<ProductsCategory> {
         val firstCategoryFlow =
-            if (Session.isAuthenticated()) repository.getUserHighlightedProducts() else repository.getMostPopularProducts()
+            if (ModuleBridge.profile?.getUserSessionToken() != null) repository.getUserHighlightedProducts() else repository.getMostPopularProducts()
 
         return combine(
             firstCategoryFlow,

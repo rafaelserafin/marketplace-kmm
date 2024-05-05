@@ -22,6 +22,12 @@ class LocalStorage(val dataStore: DataStore<Preferences>) {
         }
     }
 
+    suspend fun delete(key: String) {
+        dataStore.edit { preferences ->
+            preferences.remove(stringPreferencesKey(key))
+        }
+    }
+
     suspend inline fun <reified T> get(key: String): T? {
         return dataStore.data.first()[stringPreferencesKey(key)]?.let { Json.decodeFromString<T>(it) }
     }

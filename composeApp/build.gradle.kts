@@ -17,10 +17,15 @@ kotlin {
     sourceSets {
 
         androidMain.dependencies {
+            implementation(compose.material3)
+
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
-            implementation(compose.material3)
+
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.kotlinx.coroutines.core)
+
             implementation(libs.navigation.compose)
             implementation(libs.compose.ui.tooling)
             implementation(libs.compose.ui.tooling.preview)
@@ -38,6 +43,7 @@ kotlin {
             implementation(projects.shared.core)
             implementation(projects.shared.features.designSystem)
             implementation(projects.shared.features.products)
+            implementation(projects.shared.features.profile)
             implementation(projects.shared.features.shopping)
         }
     }

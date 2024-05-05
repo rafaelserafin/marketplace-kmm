@@ -20,7 +20,7 @@ import com.rsddm.marketplace.features.shopping.shoppingNavigation
 import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
-import session.Session
+import data.session.UserSession
 
 @Composable
 fun App() {
@@ -65,7 +65,7 @@ private fun AppTopBar(navigator: Navigator) {
     when (state.value) {
         is NavigatorState.Home -> {
             TopBar(
-                title = if (Session.userSession == null) "Acessar conta" else "Olá, ${Session.userSession?.name}",
+                title = if (UserSession.user == null) "Acessar conta" else "Olá, ${UserSession.user?.name}",
                 textUnderline = true,
                 image = painterResource(id = (state.value as NavigatorState.Home).imageRes),
                 onTitleClick = {
