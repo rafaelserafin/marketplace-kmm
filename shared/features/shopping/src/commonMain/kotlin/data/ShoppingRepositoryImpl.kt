@@ -1,10 +1,10 @@
 package data
 
 import bridge.ModuleBridge
+import common.errors.UnauthorizedException
 import data.api.ShoppingApi
 import data.api.errors.StockLackException
 import data.api.errors.TransactionException
-import data.api.errors.UnauthorizedException
 import data.session.ShoppingCartSession
 import domain.entities.ShoppingCartProduct
 import domain.entities.ShoppingOrder
@@ -39,7 +39,7 @@ class ShoppingRepositoryImpl(
         val shoppingOrders = localStorage.get<MutableList<ShoppingOrder>>(combinedKey) ?: mutableListOf()
         shoppingOrders.add(shoppingOrder)
 
-        localStorage.save(combinedKey, shoppingOrder)
+        localStorage.save(combinedKey, shoppingOrders)
     }
 
     override suspend fun getOrders() : List<ShoppingOrder> {

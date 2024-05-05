@@ -13,7 +13,6 @@ import domain.entities.Product
 import domain.useCases.LoadHomeProductsUseCase
 import domain.useCases.LoadHomeProductsUseCaseFactory
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(navigator: Navigator) :

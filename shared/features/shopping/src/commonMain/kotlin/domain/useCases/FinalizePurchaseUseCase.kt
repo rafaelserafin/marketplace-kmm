@@ -25,6 +25,8 @@ class FinalizePurchaseUseCase(
 ) : UseCase<ShoppingOrder, ShoppingOrder>() {
     override suspend fun implementation(input: ShoppingOrder): ShoppingOrder {
         return repository.finalizePurchase(input).apply {
+            repository.savePurchaseLocal(input)
+
             ShoppingCartSession.removeAll()
         }
     }

@@ -1,13 +1,19 @@
 package com.rsddm.marketplace.features.products.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,7 +30,6 @@ fun ProductsHomeScreen(
     uiState: ProductList.UIState,
     actionBundle: ProductList.ActionBundle
 ) {
-
     LaunchedEffect(true) {
         actionBundle.setupTopBar("")
     }
@@ -44,7 +49,11 @@ fun ProductsHomeScreen(
 }
 
 @Composable
-private fun List(categories: List<ProductsCategory>, onSearch: OnSearch, onProductClick: OnProductClick) {
+private fun List(
+    categories: List<ProductsCategory>,
+    onSearch: OnSearch,
+    onProductClick: OnProductClick
+) {
     Column {
         SearchBar(
             hint = stringResource(R.string.search),

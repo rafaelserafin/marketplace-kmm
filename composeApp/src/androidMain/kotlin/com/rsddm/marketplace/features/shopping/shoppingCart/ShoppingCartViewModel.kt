@@ -10,9 +10,9 @@ import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
+import common.errors.UnauthorizedException
 import data.api.errors.StockLackException
 import data.api.errors.TransactionException
-import data.api.errors.UnauthorizedException
 import data.session.ShoppingCartSession
 import domain.entities.ShoppingCartProduct
 import domain.entities.ShoppingOrder
@@ -21,8 +21,6 @@ import domain.useCases.FinalizePurchaseUseCaseFactory
 import domain.useCases.UpdateShoppingCartProductUseCase
 import domain.useCases.UpdateShoppingCartProductUseCaseFactory
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -75,7 +73,7 @@ class ShoppingCartViewModel(navigator: Navigator) :
     }
 
     override fun goToMyOrders() {
-
+        navigator.navigate(AppRoutes.Profile)
     }
 
     override fun onBuyClick() {

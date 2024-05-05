@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
+import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
@@ -34,7 +35,7 @@ class ProfileLoginViewModel(navigator: Navigator) :
                 loginUseCase.execute(user) {
                     when(it) {
                         is Resource.Error -> setUIState(ProfileLogin.UIState.Error(user, it.exception?.message))
-                        is Resource.Success -> navigator.popBackStack()
+                        is Resource.Success -> navigator.navigateBack()// navigator.popBackStack()
                     }
                 }
             }

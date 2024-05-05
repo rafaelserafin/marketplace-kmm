@@ -55,11 +55,10 @@ private fun Login(userLogin: UserLogin?, error: String?, actionBundle: ProfileLo
             .padding(horizontal = 24.dp, vertical = 40.dp),
         verticalArrangement = Arrangement.Top
     ) {
-
         val context = LocalContext.current
 
-        var username by remember { mutableStateOf(userLogin?.username.orEmpty()) }
-        var password by remember { mutableStateOf(userLogin?.password.orEmpty()) }
+        var username by remember { mutableStateOf(userLogin?.username ?: "test@test.com") }
+        var password by remember { mutableStateOf(userLogin?.password ?: "123456") }
 
         LaunchedEffect(error) {
             error?.let {

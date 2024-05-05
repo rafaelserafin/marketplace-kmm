@@ -36,4 +36,13 @@
 
 <!-- Profile Login -->
     <string name="login">Login</string>
+
+<!-- Profile Detail -->
+    <string name="profile_detail_title">Minha conta</string>
+    <string name="my_orders">Meus pedidos</string>
+    <string name="logout">Sair</string>
+    <string name="name">Nome</string>
+    <string name="birthday">Nascimento</string>
+    <string name="order">Pedido</string>
+    <string name="profile_data">Meus dados</string>
 </resources>

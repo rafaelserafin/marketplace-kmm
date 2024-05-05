@@ -16,7 +16,8 @@ abstract class UseCase<I, R> {
             .catch {
                 println("error")
                 println(it.message)
-                emit(Resource.Error(it)) }
+                emit(Resource.Error(it))
+            }
             .flowOn(Dispatchers.IO)
             .collect(flowCollector)
 

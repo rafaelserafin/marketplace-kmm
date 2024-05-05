@@ -21,7 +21,8 @@ internal class FakeBackend : Backend{
         "designSystem/theme=varejo" to "{\"primary\":4294926848,\"onPrimary\":4294966527,\"secondary\":4293220352,\"onSecondary\":4294966527,\"tertiary\":4278190182,\"onTertiary\":4294966527,\"background\":4294966527,\"onBackground\":4279966751}",
         "designSystem/theme=temp" to "{\"primary\":4294926848,\"onPrimary\":4294966527,\"secondary\":4293220352,\"onSecondary\":4294966527,\"tertiary\":4278190182,\"onTertiary\":4294966527,\"background\":4294966527,\"onBackground\":4279966751}",
 
-        "user/username=test@test.com&password=123456" to "{\"name\":\"Fulano de tal\",\"email\":\"test@test.com\",\"birthday\":\"04/05/2024\",\"token\":\"fakeauthenticationtoken\"}"
+        "user/username=test@test.com&password=123456" to "{\"name\":\"Rogerio da Silva\",\"email\":\"test@test.com\",\"birthday\":\"04/05/2024\",\"token\":\"fakeauthenticationtoken_1\"}",
+        "user/username=test2@test.com&password=123456" to "{\"name\":\"Maria Aparecida\",\"email\":\"test2@test.com\",\"birthday\":\"05/05/2024\",\"token\":\"fakeauthenticationtoken_2\"}"
     )
 
     override fun with(route: String) = responses[route]

@@ -15,7 +15,7 @@ sealed class NavigatorState(open val title: String) {
 }
 
 class Navigator {
-    private var _route = MutableStateFlow<Route>(ProductsRoutes.List)
+    private var _route = MutableStateFlow<Route>(AppRoutes.Products)
     var route: StateFlow<Route> = _route.asStateFlow()
 
     private var _state = MutableStateFlow<NavigatorState>(NavigatorState.None)
@@ -27,7 +27,8 @@ class Navigator {
 
     fun navigate(route: Route) {
         // Generate a new RouteId
-        _route.value = object : Route(route.route) { }
+        navigateAndPop(route, _route.value)
+        //_route.value = object : Route(route.route) {}
     }
 
     fun navigateAndPop(route: Route, from: Route) {
@@ -42,7 +43,7 @@ class Navigator {
         val raw = route.route.split("/").first()
 
         // Generate a new RouteId
-        _route.value = object : Route("$raw${params.joinToString { "/$it" }}") { }
+        _route.value = object : Route("$raw${params.joinToString { "/$it" }}") {}
     }
 
     inline fun <reified T> navigate(route: Route, `object`: T) {
@@ -51,8 +52,14 @@ class Navigator {
         navigate(route, param)
     }
 
+    fun navigateBack() {
+        _route.value.from?.let {
+            _route.value = it
+        }
+    }
+
     fun popBackStack() {
         // Generate a new RouteId
-        _route.value = object : Route(AppRoutes.PopBackStack.route) { }
+        _route.value = object : Route(AppRoutes.PopBackStack.route) {}
     }
 }
