@@ -9,6 +9,7 @@ import data.session.ShoppingCartSession
 import domain.entities.ShoppingCartProduct
 import domain.entities.ShoppingOrder
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 
 private const val ORDERS_KEY = "orders_"
 private const val SHOPPING_CART_KEY = "shopping_cart_"
@@ -50,9 +51,8 @@ class ShoppingRepositoryImpl(
     override suspend fun saveShoppingCart(products: List<ShoppingCartProduct>) {
         val combinedKey = SHOPPING_CART_KEY + ModuleBridge.profile?.getUserSessionToken()
 
-        ShoppingCartSession.state.collect {
-            localStorage.save(combinedKey, it)
-        }
+        val items = ShoppingCartSession.state.first()
+        localStorage.save(combinedKey, items)
     }
 
     override suspend fun getShoppingCart(): List<ShoppingCartProduct> {

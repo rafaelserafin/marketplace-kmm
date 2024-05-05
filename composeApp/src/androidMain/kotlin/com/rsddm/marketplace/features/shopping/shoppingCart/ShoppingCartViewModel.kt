@@ -23,6 +23,7 @@ import domain.useCases.UpdateShoppingCartProductUseCaseFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ShoppingCartViewModel(navigator: Navigator) :
@@ -65,10 +66,16 @@ class ShoppingCartViewModel(navigator: Navigator) :
 
     override fun updateProductQuantity(product: ShoppingCartProduct, quantity: Int) {
         viewModelScope.launch {
-            updateShoppingCartProductUseCase.execute(product) {
-
-            }
+            updateShoppingCartProductUseCase.execute(
+                product.copy(
+                    quantity = quantity
+                )
+            ).collect()
         }
+    }
+
+    override fun goToMyOrders() {
+
     }
 
     override fun onBuyClick() {
@@ -99,9 +106,11 @@ class ShoppingCartViewModel(navigator: Navigator) :
                                 it.exception?.message.orEmpty(),
                                 "revisar pedido"
                             ) {
-                                ShoppingCart.UIState.CheckIn(
-                                    products,
-                                    calculateTotalAmount(products)
+                                setUIState(
+                                    ShoppingCart.UIState.CheckIn(
+                                        products,
+                                        calculateTotalAmount(products)
+                                    )
                                 )
                             }
 
@@ -109,9 +118,11 @@ class ShoppingCartViewModel(navigator: Navigator) :
                                 it.exception?.message.orEmpty(),
                                 "tentar novamente"
                             ) {
-                                ShoppingCart.UIState.CheckIn(
-                                    products,
-                                    calculateTotalAmount(products)
+                                setUIState(
+                                    ShoppingCart.UIState.CheckIn(
+                                        products,
+                                        calculateTotalAmount(products)
+                                    )
                                 )
                             }
                         }

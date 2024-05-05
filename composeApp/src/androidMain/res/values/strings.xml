@@ -9,6 +9,7 @@
     <string name="characteristics">Caracteristicas</string>
     <string name="delivery">Entrega</string>
     <string name="ops">Ops</string>
+    <string name="oba">Oba</string>
 
 <!-- Product Detail -->
     <string name="products_detail">Detalhes</string>
@@ -30,6 +31,8 @@
     <string name="quantity_of_items">Quantiadde de itens:</string>
     <string name="finalize_purchase">Finalizar compra</string>
     <string name="try_again">Tentar novamente</string>
+    <string name="see_my_orders">Ver meus pedidos</string>
+    <string name="order_success">Deu tudo certo com a sua compra</string>
 
 <!-- Profile Login -->
     <string name="login">Login</string>

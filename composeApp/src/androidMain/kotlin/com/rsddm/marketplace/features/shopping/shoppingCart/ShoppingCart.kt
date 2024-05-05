@@ -16,5 +16,6 @@ class ShoppingCart {
     interface ActionBundle : BaseActionBundle {
         fun updateProductQuantity(product: ShoppingCartProduct, quantity: Int)
         fun onBuyClick()
+        fun goToMyOrders()
     }
 }

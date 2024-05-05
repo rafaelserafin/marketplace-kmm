@@ -20,7 +20,7 @@ object ShoppingCartSession {
         val product = products.firstOrNull { item -> item.name == shoppingCartProduct.name }
 
         if (product != null) {
-            product.quantity -= shoppingCartProduct.quantity
+            product.quantity += shoppingCartProduct.quantity
 
             if (product.quantity <= 0) {
                 products.remove(product)
@@ -28,6 +28,10 @@ object ShoppingCartSession {
         }
 
         _state.tryEmit(products)
+    }
+
+    internal fun removeAll(){
+        _state.tryEmit(listOf())
     }
 
     internal fun add(shoppingCartProduct: ShoppingCartProduct) {

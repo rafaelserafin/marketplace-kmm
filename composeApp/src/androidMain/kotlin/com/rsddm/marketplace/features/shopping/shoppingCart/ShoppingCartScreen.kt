@@ -32,6 +32,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -61,7 +62,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rsddm.marketplace.R
 import com.rsddm.marketplace.designSystem.theme.Green
 import com.rsddm.marketplace.designSystem.theme.Red
@@ -85,7 +85,7 @@ fun ShoppingCartScreen(uiState: ShoppingCart.UIState, actionBundle: ShoppingCart
     }
 
     SimpleAnimatedVisibility(uiState is ShoppingCart.UIState.OrderSuccess) {
-        OrderSuccess()
+        OrderSuccess(actionBundle::goToMyOrders)
     }
 
     SimpleAnimatedVisibility(uiState is ShoppingCart.UIState.OrderError) {
@@ -200,18 +200,67 @@ private fun FinalizingPurchase() {
 }
 
 @Composable
-private fun OrderSuccess() {
-    Box(
+private fun OrderSuccess(action: () -> Unit) {
+    var timer by remember { mutableIntStateOf(10) }
+    LaunchedEffect(key1 = timer) {
+        if (timer > 0) {
+            delay(1000L)
+            timer -= 1
+        } else {
+            action()
+        }
+    }
+
+    Column(
         modifier = Modifier.fillMaxSize()
             .background(Green)
+            .padding(vertical = 80.dp, horizontal = 24.dp),
+        verticalArrangement = Arrangement.Top
     ) {
+
+
+        Icon(
+            imageVector = Icons.Default.Check,
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier.size(120.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = stringResource(R.string.oba),
+            style = MaterialTheme.typography.displaySmall,
+            color = Color.White
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = stringResource(R.string.order_success),
+            style = MaterialTheme.typography.titleLarge,
+            color = Color.White
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        OutlinedButton(
+            onClick = { action() },
+            modifier = Modifier.fillMaxWidth(),
+            border = BorderStroke(1.dp, Color.White),
+            colors = ButtonDefaults.outlinedButtonColors().copy(
+                contentColor = Color.White
+            )
+        ) {
+            Text("${stringResource(R.string.see_my_orders)} $timer")
+        }
 
     }
 }
 
 @Composable
 private fun OrderError(error: String, actionName: String, action: () -> Unit) {
-
     var timer by remember { mutableIntStateOf(10) }
     LaunchedEffect(key1 = timer) {
         if (timer > 0) {
