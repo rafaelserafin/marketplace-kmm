@@ -1,39 +1,18 @@
 package data
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import kotlinx.coroutines.flow.first
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class LocalStorage(val dataStore: DataStore<Preferences>) {
+interface LocalStorage {
+    suspend fun delete(key: String)
 
-    suspend inline fun <reified T> save(key: String, value: T) {
-        dataStore.edit { preferences ->
-            preferences[stringPreferencesKey(key)] = Json.encodeToString(value)
-        }
-    }
+    suspend fun getString(key: String): String?
 
-    suspend fun save(key: String, value: String) {
-        dataStore.edit { preferences ->
-            preferences[stringPreferencesKey(key)] = value
-        }
-    }
-
-    suspend fun delete(key: String) {
-        dataStore.edit { preferences ->
-            preferences.remove(stringPreferencesKey(key))
-        }
-    }
-
-    suspend inline fun <reified T> get(key: String): T? {
-        return dataStore.data.first()[stringPreferencesKey(key)]?.let { Json.decodeFromString<T>(it) }
-    }
-
-    suspend inline fun getString(key: String): String? {
-        return dataStore.data.first()[stringPreferencesKey(key)]
-    }
-
+    suspend fun saveString(key: String, value: String)
 }
+
+suspend inline fun <reified T> LocalStorage.save(key: String, value: T) =
+    this.saveString(key, Json.encodeToString(value))
+
+suspend inline fun <reified T> LocalStorage.get(key: String): T? =
+    getString(key)?.let { Json.decodeFromString<T>(it) }
