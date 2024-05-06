@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import com.rsddm.marketplace.R
 import com.rsddm.marketplace.designSystem.components.Loading
 import domain.entities.UserLogin
-import kotlin.math.sin
 
 @Composable
 fun ProfileLoginScreen(

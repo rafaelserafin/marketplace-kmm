@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.paparazzi)
 }
 
 kotlin {
@@ -31,6 +32,8 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.lifecycle.viewmodel.compose)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(libs.junit)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -83,3 +86,8 @@ android {
     }
 }
 
+buildscript {
+    dependencies {
+        classpath(libs.paparazzi.gradle.plugin)
+    }
+}

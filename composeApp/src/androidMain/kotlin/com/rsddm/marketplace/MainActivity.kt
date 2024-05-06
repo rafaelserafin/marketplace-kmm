@@ -6,17 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.rsddm.marketplace.designSystem.theme.Blue
 import com.rsddm.marketplace.designSystem.theme.MarketplaceTheme
-import com.rsddm.marketplace.designSystem.theme.Orange
-import com.rsddm.marketplace.designSystem.theme.OrangeVariant
 import com.rsddm.marketplace.designSystem.theme.toColorScheme
 import com.rsddm.marketplace.splash.SetupState
 import com.rsddm.marketplace.splash.SetupViewModel
