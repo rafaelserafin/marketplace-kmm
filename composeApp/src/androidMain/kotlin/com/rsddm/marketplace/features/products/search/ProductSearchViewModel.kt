@@ -11,7 +11,7 @@ import common.Resource
 import domain.entities.Product
 import domain.entities.Search
 import domain.useCases.SearchProductsUseCase
-import domain.useCases.SearchProductsUseCaseFactory
+import domain.useCases.SearchProductsUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -21,7 +21,7 @@ class ProductSearchViewModel(var query: String, navigator: Navigator) :
 
     private var offset = 0
     private var endOfList = false
-    private val searchProductsUseCase: SearchProductsUseCase by SearchProductsUseCaseFactory()
+    private val searchProductsUseCase: SearchProductsUseCase by SearchProductsUseCaseProvider()
 
     override val _uiState: MutableStateFlow<ProductSearch.UIState> =
         MutableStateFlow(ProductSearch.UIState.Loading)

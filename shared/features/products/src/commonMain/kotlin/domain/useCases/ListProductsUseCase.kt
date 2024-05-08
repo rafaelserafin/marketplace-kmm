@@ -1,23 +1,18 @@
 package domain.useCases
 
-import Factory
+import Provider
 import bridge.ModuleBridge
 import common.UseCase
+import data.ProductRepositoryProvider
 import data.ProductsRepository
-import data.ProductsRepositoryImpl
-import data.api.ProductsApiImpl
-import di.CoreContainer
 import domain.entities.ProductsCategory
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 
-class LoadHomeProductsUseCaseFactory : Factory<LoadHomeProductsUseCase>() {
+class LoadHomeProductsUseCaseProvider : Provider<LoadHomeProductsUseCase>() {
     override fun provide(): LoadHomeProductsUseCase {
         return LoadHomeProductsUseCase(
-            ProductsRepositoryImpl(
-                ProductsApiImpl(CoreContainer.api),
-                CoreContainer.localStorage
-            )
+            ProductRepositoryProvider().provide()
         )
     }
 }

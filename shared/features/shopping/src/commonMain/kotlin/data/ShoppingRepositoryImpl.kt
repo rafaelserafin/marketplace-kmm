@@ -1,11 +1,14 @@
 package data
 
+import Provider
 import bridge.ModuleBridge
 import common.errors.UnauthorizedException
 import data.api.ShoppingApi
+import data.api.ShoppingApiImpl
 import data.api.errors.StockLackException
 import data.api.errors.TransactionException
 import data.session.ShoppingCartSession
+import di.CoreContainer
 import domain.entities.ShoppingCartProduct
 import domain.entities.ShoppingOrder
 import kotlinx.coroutines.delay
@@ -14,8 +17,14 @@ import kotlinx.coroutines.flow.first
 private const val ORDERS_KEY = "orders_"
 private const val SHOPPING_CART_KEY = "shopping_cart_"
 
+class ShoppingRepositoryProvider: Provider<ShoppingRepository>() {
+    override fun provide(): ShoppingRepository =
+        ShoppingRepositoryImpl(
+            CoreContainer.localStorage
+        )
+}
+
 class ShoppingRepositoryImpl(
-    private val api: ShoppingApi,
     private val localStorage: LocalStorage
 ) : ShoppingRepository {
     override suspend fun finalizePurchase(shoppingOrder: ShoppingOrder): ShoppingOrder {

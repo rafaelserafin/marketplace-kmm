@@ -1,20 +1,15 @@
 package domain.useCases
 
-import Factory
+import Provider
 import common.UseCase
 import data.ShoppingRepository
-import data.ShoppingRepositoryImpl
-import data.api.ShoppingApiImpl
-import di.CoreContainer
+import data.ShoppingRepositoryProvider
 import domain.entities.ShoppingOrder
 
-class GetShoppingOrdersUseCaseFactory : Factory<GetShoppingOrdersUseCase>() {
+class GetShoppingOrdersUseCaseProvider : Provider<GetShoppingOrdersUseCase>() {
     override fun provide(): GetShoppingOrdersUseCase {
         return GetShoppingOrdersUseCase(
-            ShoppingRepositoryImpl(
-                ShoppingApiImpl(CoreContainer.api),
-                CoreContainer.localStorage
-            )
+            ShoppingRepositoryProvider().provide()
         )
     }
 }

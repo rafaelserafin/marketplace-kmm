@@ -1,17 +1,25 @@
 package data
 
+import Provider
 import data.api.ProductsApi
+import data.api.ProductsApiImpl
+import di.CoreContainer
 import domain.entities.Product
 import domain.entities.ProductDetail
 import domain.entities.ProductsCategory
 import domain.entities.Search
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+class ProductRepositoryProvider: Provider<ProductsRepository>() {
+    override fun provide(): ProductsRepository =
+        ProductsRepositoryImpl(
+            ProductsApiImpl(CoreContainer.api)
+        )
+}
+
 class ProductsRepositoryImpl(
-    private val api: ProductsApi,
-    private val localStorage: LocalStorage
+    private val api: ProductsApi
 ) : ProductsRepository {
     override suspend fun getUserHighlightedProducts(): Flow<ProductsCategory> = flow {
         emit(api.getUserHighlightedProducts())

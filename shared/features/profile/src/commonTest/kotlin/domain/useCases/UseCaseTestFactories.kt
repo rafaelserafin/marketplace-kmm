@@ -1,6 +1,6 @@
 package domain.useCases
 
-import Factory
+import Provider
 import data.ProfileRepositoryImpl
 import data.api.ProfileApiImpl
 import network.Api
@@ -22,22 +22,22 @@ object UseCaseTestFactories {
     }
 }
 
-class GetUserUseCaseTestFactory : Factory<GetUserUseCase>() {
+class GetUserUseCaseTestProvider : Provider<GetUserUseCase>() {
     override fun provide(): GetUserUseCase =
         GetUserUseCase(UseCaseTestFactories.repository)
 }
 
-class LoginUseCaseTestFactory : Factory<LoginUseCase>() {
+class LoginUseCaseTestProvider : Provider<LoginUseCase>() {
     override fun provide(): LoginUseCase =
         LoginUseCase(UseCaseTestFactories.repository)
 }
 
-class LogoutUseCaseTestFactory : Factory<LogoutUseCase>() {
+class LogoutUseCaseTestProvider : Provider<LogoutUseCase>() {
     override fun provide(): LogoutUseCase =
         LogoutUseCase(UseCaseTestFactories.repository)
 }
 
-class RefreshUserSessionUseCaseTestFactory : Factory<RefreshUserSessionUseCase>() {
+class RefreshUserSessionUseCaseTestProvider : Provider<RefreshUserSessionUseCase>() {
     override fun provide(): RefreshUserSessionUseCase =
         RefreshUserSessionUseCase(UseCaseTestFactories.repository)
 }

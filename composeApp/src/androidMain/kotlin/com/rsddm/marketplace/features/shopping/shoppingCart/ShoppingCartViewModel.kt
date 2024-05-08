@@ -17,9 +17,9 @@ import data.session.ShoppingCartSession
 import domain.entities.ShoppingCartProduct
 import domain.entities.ShoppingOrder
 import domain.useCases.FinalizePurchaseUseCase
-import domain.useCases.FinalizePurchaseUseCaseFactory
+import domain.useCases.FinalizePurchaseUseCaseProvider
 import domain.useCases.UpdateShoppingCartProductUseCase
-import domain.useCases.UpdateShoppingCartProductUseCaseFactory
+import domain.useCases.UpdateShoppingCartProductUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -28,8 +28,8 @@ class ShoppingCartViewModel(navigator: Navigator) :
     BaseViewModel<ShoppingCart.UIState, ShoppingCart.ActionBundle>(navigator),
     ShoppingCart.ActionBundle {
 
-    private val updateShoppingCartProductUseCase: UpdateShoppingCartProductUseCase by UpdateShoppingCartProductUseCaseFactory()
-    private val finalizePurchaseUseCase: FinalizePurchaseUseCase by FinalizePurchaseUseCaseFactory()
+    private val updateShoppingCartProductUseCase: UpdateShoppingCartProductUseCase by UpdateShoppingCartProductUseCaseProvider()
+    private val finalizePurchaseUseCase: FinalizePurchaseUseCase by FinalizePurchaseUseCaseProvider()
 
     override val _uiState = MutableStateFlow<ShoppingCart.UIState>(ShoppingCart.UIState.Empty)
     override val actionBundle: ShoppingCart.ActionBundle = this

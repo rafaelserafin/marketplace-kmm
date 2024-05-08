@@ -15,11 +15,10 @@ import domain.entities.Product
 import domain.entities.ProductDetail
 import domain.entities.ShoppingCartProduct
 import domain.useCases.GetProductDetailUseCase
-import domain.useCases.GetProductDetailUseCaseFactory
+import domain.useCases.GetProductDetailUseCaseProvider
 import domain.useCases.UpdateShoppingCartProductUseCase
-import domain.useCases.UpdateShoppingCartProductUseCaseFactory
+import domain.useCases.UpdateShoppingCartProductUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ProductDetailsViewModel(product: Product, navigator: Navigator) :
@@ -27,8 +26,8 @@ class ProductDetailsViewModel(product: Product, navigator: Navigator) :
             ProductDetails.ActionBundle>(navigator),
     ProductDetails.ActionBundle {
 
-    private val getProductDetailUseCase: GetProductDetailUseCase by GetProductDetailUseCaseFactory()
-    private val updateShoppingCartProductUseCase: UpdateShoppingCartProductUseCase by UpdateShoppingCartProductUseCaseFactory()
+    private val getProductDetailUseCase: GetProductDetailUseCase by GetProductDetailUseCaseProvider()
+    private val updateShoppingCartProductUseCase: UpdateShoppingCartProductUseCase by UpdateShoppingCartProductUseCaseProvider()
 
     override val _uiState: MutableStateFlow<ProductDetails.UIState> = MutableStateFlow(ProductDetails.UIState.Loading(ProductDetail(product = product)))
     override val actionBundle: ProductDetails.ActionBundle = this

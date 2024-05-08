@@ -1,11 +1,11 @@
 package domain.useCases
 
-import Factory
+import Provider
 import common.UseCase
 import data.session.ShoppingCartSession
 import domain.entities.ShoppingCartProduct
 
-class UpdateShoppingCartProductUseCaseFactory : Factory<UpdateShoppingCartProductUseCase>() {
+class UpdateShoppingCartProductUseCaseProvider : Provider<UpdateShoppingCartProductUseCase>() {
     override fun provide(): UpdateShoppingCartProductUseCase {
         return UpdateShoppingCartProductUseCase()
     }

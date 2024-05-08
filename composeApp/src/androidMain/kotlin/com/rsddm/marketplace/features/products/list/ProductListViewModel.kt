@@ -11,7 +11,7 @@ import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
 import domain.entities.Product
 import domain.useCases.LoadHomeProductsUseCase
-import domain.useCases.LoadHomeProductsUseCaseFactory
+import domain.useCases.LoadHomeProductsUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -19,7 +19,7 @@ class ProductListViewModel(navigator: Navigator) :
     BaseViewModel<ProductList.UIState, ProductList.ActionBundle>(navigator),
     ProductList.ActionBundle{
 
-    private val loadHomeProductsUseCase: LoadHomeProductsUseCase by LoadHomeProductsUseCaseFactory()
+    private val loadHomeProductsUseCase: LoadHomeProductsUseCase by LoadHomeProductsUseCaseProvider()
 
     override val _uiState: MutableStateFlow<ProductList.UIState> = MutableStateFlow(ProductList.UIState.Loading)
     override val actionBundle: ProductList.ActionBundle = this

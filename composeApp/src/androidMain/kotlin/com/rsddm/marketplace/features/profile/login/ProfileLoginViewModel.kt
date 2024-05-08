@@ -4,13 +4,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
-import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
 import domain.entities.UserLogin
 import domain.useCases.LoginUseCase
-import domain.useCases.LoginUseCaseFactory
+import domain.useCases.LoginUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -18,7 +17,7 @@ class ProfileLoginViewModel(navigator: Navigator) :
     BaseViewModel<ProfileLogin.UIState, ProfileLogin.ActionBundle>(navigator),
     ProfileLogin.ActionBundle {
 
-    private val loginUseCase: LoginUseCase by LoginUseCaseFactory()
+    private val loginUseCase: LoginUseCase by LoginUseCaseProvider()
 
     override val _uiState = MutableStateFlow<ProfileLogin.UIState>(ProfileLogin.UIState.Idle)
     override val actionBundle: ProfileLogin.ActionBundle = this

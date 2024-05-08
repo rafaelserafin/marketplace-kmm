@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 
 class LoginUseCaseTest {
 
-    private val loginUseCase: LoginUseCase by LoginUseCaseTestFactory()
+    private val loginUseCase: LoginUseCase by LoginUseCaseTestProvider()
 
     @BeforeTest
     fun setupStorage() {

@@ -4,16 +4,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rsddm.marketplace.core.BaseViewModel
-import com.rsddm.marketplace.navigation.AppRoutes
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
 import domain.useCases.GetShoppingOrdersUseCase
-import domain.useCases.GetShoppingOrdersUseCaseFactory
+import domain.useCases.GetShoppingOrdersUseCaseProvider
 import domain.useCases.GetUserUseCase
-import domain.useCases.GetUserUseCaseFactory
+import domain.useCases.GetUserUseCaseProvider
 import domain.useCases.LogoutUseCase
-import domain.useCases.LogoutUseCaseFactory
+import domain.useCases.LogoutUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -21,9 +20,9 @@ class ProfileDetailViewModel(navigator: Navigator) :
     BaseViewModel<ProfileDetail.UIState, ProfileDetail.ActionBundle>(navigator),
     ProfileDetail.ActionBundle {
 
-    private val logoutUseCase: LogoutUseCase by LogoutUseCaseFactory()
-    private val getUserUseCase: GetUserUseCase by GetUserUseCaseFactory()
-    private val getShoppingOrdersUseCase: GetShoppingOrdersUseCase by GetShoppingOrdersUseCaseFactory()
+    private val logoutUseCase: LogoutUseCase by LogoutUseCaseProvider()
+    private val getUserUseCase: GetUserUseCase by GetUserUseCaseProvider()
+    private val getShoppingOrdersUseCase: GetShoppingOrdersUseCase by GetShoppingOrdersUseCaseProvider()
 
     override val _uiState = MutableStateFlow<ProfileDetail.UIState>(ProfileDetail.UIState.Loading)
     override val actionBundle: ProfileDetail.ActionBundle = this

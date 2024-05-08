@@ -5,13 +5,10 @@ import androidx.lifecycle.viewModelScope
 import common.Resource
 import domain.entities.Theme
 import domain.useCases.LoadAppThemeUseCase
-import domain.useCases.LoadAppThemeUseCaseFactory
+import domain.useCases.LoadAppThemeUseCaseProvider
 import domain.useCases.RefreshUserSessionUseCase
-import domain.useCases.RefreshUserSessionUseCaseFactory
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
+import domain.useCases.RefreshUserSessionUseCaseProvider
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,8 +18,8 @@ import kotlinx.coroutines.launch
 
 class SetupViewModel : ViewModel() {
 
-    private val loadAppThemeUseCase: LoadAppThemeUseCase by LoadAppThemeUseCaseFactory()
-    private val refreshUserSessionUseCase: RefreshUserSessionUseCase by RefreshUserSessionUseCaseFactory()
+    private val loadAppThemeUseCase: LoadAppThemeUseCase by LoadAppThemeUseCaseProvider()
+    private val refreshUserSessionUseCase: RefreshUserSessionUseCase by RefreshUserSessionUseCaseProvider()
 
     private val _state = MutableStateFlow<SetupState>(SetupState.Splash)
     val state: StateFlow<SetupState> = _state.asStateFlow()

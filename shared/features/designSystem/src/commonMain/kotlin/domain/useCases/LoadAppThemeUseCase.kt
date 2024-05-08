@@ -1,6 +1,6 @@
 package domain.useCases
 
-import Factory
+import Provider
 import common.UseCase
 import data.DesignSystemRepository
 import data.DesignSystemRepositoryImpl
@@ -10,7 +10,7 @@ import domain.entities.Theme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-class LoadAppThemeUseCaseFactory : Factory<LoadAppThemeUseCase>() {
+class LoadAppThemeUseCaseProvider : Provider<LoadAppThemeUseCase>() {
     override fun provide(): LoadAppThemeUseCase {
         return LoadAppThemeUseCase(
             DesignSystemRepositoryImpl(

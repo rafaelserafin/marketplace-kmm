@@ -1,22 +1,15 @@
 package domain.useCases
 
-import Factory
+import Provider
 import common.UseCase
 import data.ProfileRepository
-import data.ProfileRepositoryImpl
-import data.api.ProfileApiImpl
+import data.ProfileRepositoryProvider
 import data.session.UserSession
-import di.CoreContainer
-import domain.entities.UserLogin
-import domain.entities.UserProfile
 
-class LogoutUseCaseFactory : Factory<LogoutUseCase>() {
+class LogoutUseCaseProvider : Provider<LogoutUseCase>() {
     override fun provide(): LogoutUseCase {
         return LogoutUseCase(
-            ProfileRepositoryImpl(
-                ProfileApiImpl(CoreContainer.api),
-                CoreContainer.localStorage
-            )
+            ProfileRepositoryProvider().provide()
         )
     }
 }

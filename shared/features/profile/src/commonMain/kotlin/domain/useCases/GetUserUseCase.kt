@@ -1,23 +1,16 @@
 package domain.useCases
 
-import Factory
+import Provider
 import common.UseCase
 import common.errors.UnauthorizedException
 import data.ProfileRepository
-import data.ProfileRepositoryImpl
-import data.api.ProfileApiImpl
-import data.session.UserSession
-import di.CoreContainer
-import domain.entities.UserLogin
+import data.ProfileRepositoryProvider
 import domain.entities.UserProfile
 
-class GetUserUseCaseFactory : Factory<GetUserUseCase>() {
+class GetUserUseCaseProvider : Provider<GetUserUseCase>() {
     override fun provide(): GetUserUseCase {
         return GetUserUseCase(
-            ProfileRepositoryImpl(
-                ProfileApiImpl(CoreContainer.api),
-                CoreContainer.localStorage
-            )
+            ProfileRepositoryProvider().provide()
         )
     }
 }

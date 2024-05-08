@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 
 class GetUserUseCaseTest {
 
-    private val getUserUseCase: GetUserUseCase by GetUserUseCaseTestFactory()
+    private val getUserUseCase: GetUserUseCase by GetUserUseCaseTestProvider()
 
     @BeforeTest
     fun setupStorage() {

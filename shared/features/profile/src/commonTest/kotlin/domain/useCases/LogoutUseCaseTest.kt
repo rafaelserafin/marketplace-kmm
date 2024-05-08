@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 
 class LogoutUseCaseTest {
 
-    private val logoutUseCase: LogoutUseCase by LogoutUseCaseTestFactory()
+    private val logoutUseCase: LogoutUseCase by LogoutUseCaseTestProvider()
 
     @BeforeTest
     fun setupStorage() {

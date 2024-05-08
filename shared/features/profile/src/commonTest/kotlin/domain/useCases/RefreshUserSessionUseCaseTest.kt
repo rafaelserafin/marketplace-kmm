@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
 
 class RefreshUserSessionUseCaseTest {
 
-    private val refreshUserSessionUseCase: RefreshUserSessionUseCase by RefreshUserSessionUseCaseTestFactory()
+    private val refreshUserSessionUseCase: RefreshUserSessionUseCase by RefreshUserSessionUseCaseTestProvider()
 
     @BeforeTest
     fun setupStorage() {
