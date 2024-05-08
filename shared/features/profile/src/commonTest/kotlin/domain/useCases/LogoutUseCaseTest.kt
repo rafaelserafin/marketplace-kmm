@@ -12,15 +12,15 @@ class LogoutUseCaseTest {
 
     @BeforeTest
     fun setupStorage() {
-        UseCaseTestFactories.fakeLocalStorage.clear()
+        UseCaseTestProvider.fakeLocalStorage.clear()
     }
 
     @Test
     fun `when logout then logoutUseCase should delete saved user`() = runBlockingTest {
-        UseCaseTestFactories.addFakeUser()
+        UseCaseTestProvider.addFakeUser()
 
         logoutUseCase.execute(Unit).first()
 
-        assertEquals(null, UseCaseTestFactories.fakeLocalStorage.getString("user_session"))
+        assertEquals(null, UseCaseTestProvider.fakeLocalStorage.getString("user_session"))
     }
 }

@@ -51,4 +51,5 @@ android {
 }
 dependencies {
     implementation(project(":shared:core"))
+    testImplementation(project(":shared:core"))
 }

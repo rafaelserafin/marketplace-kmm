@@ -13,7 +13,7 @@ class RefreshUserSessionUseCaseTest {
 
     @BeforeTest
     fun setupStorage() {
-        UseCaseTestFactories.fakeLocalStorage.clear()
+        UseCaseTestProvider.fakeLocalStorage.clear()
     }
 
     @Test
@@ -25,7 +25,7 @@ class RefreshUserSessionUseCaseTest {
 
     @Test
     fun `when exists saved user then refreshUserSessionUseCase should add it to UserSession`() = runBlockingTest {
-        UseCaseTestFactories.addFakeUser()
+        UseCaseTestProvider.addFakeUser()
 
         refreshUserSessionUseCase.execute(Unit).first()
 

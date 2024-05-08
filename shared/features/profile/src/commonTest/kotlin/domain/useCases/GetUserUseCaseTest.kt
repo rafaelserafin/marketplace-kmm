@@ -13,7 +13,7 @@ class GetUserUseCaseTest {
 
     @BeforeTest
     fun setupStorage() {
-        UseCaseTestFactories.fakeLocalStorage.clear()
+        UseCaseTestProvider.fakeLocalStorage.clear()
     }
 
     @Test
@@ -26,7 +26,7 @@ class GetUserUseCaseTest {
     @Test
     fun `when LocalStorage contains saved user then getUserUseCase should return UserProfile`() =
         runBlockingTest {
-            UseCaseTestFactories.addFakeUser()
+            UseCaseTestProvider.addFakeUser()
 
             val result = getUserUseCase.execute(Unit).first()
 

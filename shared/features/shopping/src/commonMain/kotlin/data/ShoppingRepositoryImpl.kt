@@ -33,7 +33,7 @@ class ShoppingRepositoryImpl(
         val moreThenTree = shoppingOrder.products.firstOrNull { it.quantity > 3 }
 
         when {
-            ModuleBridge.profile?.isUserAuthenticated() == false -> throw UnauthorizedException()
+            ModuleBridge.profile?.isUserAuthenticated() != true -> throw UnauthorizedException()
             moreThenTree != null -> throw StockLackException(moreThenTree.name)
             shoppingOrder.products.sumOf { it.quantity } > 16 -> throw TransactionException()
             else -> return shoppingOrder.copy(

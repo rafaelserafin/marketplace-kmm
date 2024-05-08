@@ -14,7 +14,7 @@ class LoginUseCaseTest {
 
     @BeforeTest
     fun setupStorage() {
-        UseCaseTestFactories.fakeLocalStorage.clear()
+        UseCaseTestProvider.fakeLocalStorage.clear()
     }
 
     @Test

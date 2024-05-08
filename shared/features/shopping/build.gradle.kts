@@ -31,6 +31,11 @@ kotlin {
 
             implementation(projects.shared.core)
         }
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }
 
@@ -47,4 +52,5 @@ android {
 }
 dependencies {
     implementation(project(":shared:core"))
+    testImplementation(project(":shared:core"))
 }

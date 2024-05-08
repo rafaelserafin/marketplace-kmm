@@ -3,9 +3,10 @@ package domain.useCases
 import Provider
 import data.ProfileRepositoryImpl
 import data.api.ProfileApiImpl
+import domain.data.FakeLocalStorage
 import network.Api
 
-object UseCaseTestFactories {
+object UseCaseTestProvider {
     val fakeLocalStorage = FakeLocalStorage()
 
     val repository = ProfileRepositoryImpl(
@@ -24,20 +25,20 @@ object UseCaseTestFactories {
 
 class GetUserUseCaseTestProvider : Provider<GetUserUseCase>() {
     override fun provide(): GetUserUseCase =
-        GetUserUseCase(UseCaseTestFactories.repository)
+        GetUserUseCase(UseCaseTestProvider.repository)
 }
 
 class LoginUseCaseTestProvider : Provider<LoginUseCase>() {
     override fun provide(): LoginUseCase =
-        LoginUseCase(UseCaseTestFactories.repository)
+        LoginUseCase(UseCaseTestProvider.repository)
 }
 
 class LogoutUseCaseTestProvider : Provider<LogoutUseCase>() {
     override fun provide(): LogoutUseCase =
-        LogoutUseCase(UseCaseTestFactories.repository)
+        LogoutUseCase(UseCaseTestProvider.repository)
 }
 
 class RefreshUserSessionUseCaseTestProvider : Provider<RefreshUserSessionUseCase>() {
     override fun provide(): RefreshUserSessionUseCase =
-        RefreshUserSessionUseCase(UseCaseTestFactories.repository)
+        RefreshUserSessionUseCase(UseCaseTestProvider.repository)
 }

@@ -1,4 +1,4 @@
-package domain.useCases
+package domain.data
 
 import data.LocalStorage
 
