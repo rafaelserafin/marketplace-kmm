@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.firstOrNull
 
 object ShoppingCartSession {
 
-    private val _state = MutableSharedFlow<List<ShoppingCartProduct>>(10)
+    private val _state = MutableSharedFlow<List<ShoppingCartProduct>>(1)
     val state: SharedFlow<List<ShoppingCartProduct>> = _state.asSharedFlow()
 
-    internal fun remove(shoppingCartProduct: ShoppingCartProduct) {
+    internal fun remove(shoppingCartProduct: ShoppingCartProduct): List<ShoppingCartProduct> {
         val products =
             if (_state.replayCache.isEmpty()) mutableListOf() else _state.replayCache.last()
                 .toMutableList()
@@ -28,13 +28,14 @@ object ShoppingCartSession {
         }
 
         _state.tryEmit(products)
+        return products
     }
 
     internal fun removeAll(){
         _state.tryEmit(listOf())
     }
 
-    internal fun add(shoppingCartProduct: ShoppingCartProduct) {
+    internal fun add(shoppingCartProduct: ShoppingCartProduct): List<ShoppingCartProduct> {
         val products =
             if (_state.replayCache.isEmpty()) mutableListOf() else _state.replayCache.last()
                 .toMutableList()
@@ -47,6 +48,7 @@ object ShoppingCartSession {
         }
 
         _state.tryEmit(products)
+        return products
     }
 
     internal fun addAll(products: List<ShoppingCartProduct>) {

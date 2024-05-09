@@ -7,6 +7,9 @@ import com.rsddm.marketplace.core.BaseViewModel
 import com.rsddm.marketplace.navigation.Navigator
 import com.rsddm.marketplace.navigation.NavigatorState
 import common.Resource
+import data.session.ShoppingCartSession
+import domain.useCases.CleanSHoppingCartUseCase
+import domain.useCases.CleanSHoppingCartUseCaseProvider
 import domain.useCases.GetShoppingOrdersUseCase
 import domain.useCases.GetShoppingOrdersUseCaseProvider
 import domain.useCases.GetUserUseCase
@@ -14,6 +17,7 @@ import domain.useCases.GetUserUseCaseProvider
 import domain.useCases.LogoutUseCase
 import domain.useCases.LogoutUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ProfileDetailViewModel(navigator: Navigator) :
@@ -23,6 +27,7 @@ class ProfileDetailViewModel(navigator: Navigator) :
     private val logoutUseCase: LogoutUseCase by LogoutUseCaseProvider()
     private val getUserUseCase: GetUserUseCase by GetUserUseCaseProvider()
     private val getShoppingOrdersUseCase: GetShoppingOrdersUseCase by GetShoppingOrdersUseCaseProvider()
+    private val cleanShoppingOrdersUseCase: CleanSHoppingCartUseCase by CleanSHoppingCartUseCaseProvider()
 
     override val _uiState = MutableStateFlow<ProfileDetail.UIState>(ProfileDetail.UIState.Loading)
     override val actionBundle: ProfileDetail.ActionBundle = this
@@ -60,6 +65,8 @@ class ProfileDetailViewModel(navigator: Navigator) :
         setUIState(ProfileDetail.UIState.Loading)
         viewModelScope.launch {
             logoutUseCase.execute(Unit) {
+                cleanShoppingOrdersUseCase.execute(Unit).collect()
+
                 if (it.isSuccess) {
                     navigator.navigateBack()//navigator.popBackStack()
                 }

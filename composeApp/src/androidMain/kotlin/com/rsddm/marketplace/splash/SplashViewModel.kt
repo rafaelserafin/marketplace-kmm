@@ -6,6 +6,8 @@ import common.Resource
 import domain.entities.Theme
 import domain.useCases.LoadAppThemeUseCase
 import domain.useCases.LoadAppThemeUseCaseProvider
+import domain.useCases.LoadShoppingCartUseCase
+import domain.useCases.LoadShoppingCartUseCaseProvider
 import domain.useCases.RefreshUserSessionUseCase
 import domain.useCases.RefreshUserSessionUseCaseProvider
 import kotlinx.coroutines.delay
@@ -20,6 +22,7 @@ class SetupViewModel : ViewModel() {
 
     private val loadAppThemeUseCase: LoadAppThemeUseCase by LoadAppThemeUseCaseProvider()
     private val refreshUserSessionUseCase: RefreshUserSessionUseCase by RefreshUserSessionUseCaseProvider()
+    private val loadShoppingCartUseCase: LoadShoppingCartUseCase by LoadShoppingCartUseCaseProvider()
 
     private val _state = MutableStateFlow<SetupState>(SetupState.Splash)
     val state: StateFlow<SetupState> = _state.asStateFlow()
@@ -35,8 +38,10 @@ class SetupViewModel : ViewModel() {
 
         combine(
             loadAppThemeUseCase.execute("varejo"),
-            refreshUserSessionUseCase.execute(Unit)
+            refreshUserSessionUseCase.execute(Unit),
         ) { themeResource, _ ->
+            loadShoppingCartUseCase.execute(Unit).collect()
+
             _state.value = when (themeResource) {
                 is Resource.Error -> SetupState.Finish(
                     Theme(

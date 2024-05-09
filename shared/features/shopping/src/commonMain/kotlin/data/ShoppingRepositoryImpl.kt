@@ -60,8 +60,7 @@ class ShoppingRepositoryImpl(
     override suspend fun saveShoppingCart(products: List<ShoppingCartProduct>) {
         val combinedKey = SHOPPING_CART_KEY + ModuleBridge.profile?.getUserSessionToken()
 
-        val items = ShoppingCartSession.state.first()
-        localStorage.save(combinedKey, items)
+        localStorage.save(combinedKey, products)
     }
 
     override suspend fun getShoppingCart(): List<ShoppingCartProduct> {

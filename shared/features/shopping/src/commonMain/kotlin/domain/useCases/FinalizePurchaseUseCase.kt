@@ -23,6 +23,7 @@ class FinalizePurchaseUseCase(
             repository.savePurchaseLocal(input)
 
             ShoppingCartSession.removeAll()
+            repository.saveShoppingCart(listOf())
         }
     }
 }
