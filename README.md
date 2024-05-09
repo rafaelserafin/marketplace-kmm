@@ -1,17 +1,40 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.23-blue.svg?logo=kotlin)](https://kotlinlang.org)
+[![Swift](https://img.shields.io/badge/swift-5.9-orange.svg?logo=swift)](https://www.swift.com.br)
+![badge-android](http://img.shields.io/badge/platform-android-green.svg?logo=android)
+![badge-iosX64](https://img.shields.io/badge/platform-ios-red.svg?logo=apple)
+![badge-kmm](https://img.shields.io/badge/platform-kmm-CDCDCD?style=flat)
+![badge-paparazzi](https://img.shields.io/badge/platform-paparazzi-CDCDCD?style=flat)
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+# Welcome! 👋
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Welcome to the MarketplaceApp! This is a particular project to explore the Kotlin Multi Platform Framework 🤩
 
-* `/shared` is for the code that will be shared between all targets in the project.
-  The most important subfolder is `commonMain`. If preferred, you can add code to the platform-specific folders here too.
+---
+
+## How to run the project 📦
+
+1. Install Android Studio (latest version);
+2. KMM plugin;
+3. Select the option to open a project;
+4. Select the project
+5. Build and Run
+
+🍎 If you wants to run the iOS app, you should open the file `iosApp/iosApp.xcodeproj` (WIP).
+
+---
+
+## Project Status
+
+- Android ![Android](https://geps.dev/progress/70)
+- iOS ![iOS](https://geps.dev/progress/0)
+- Shared ![Shared](https://geps.dev/progress/80)
+- UnitTest ![UnitTest](https://geps.dev/progress/45)
+- Snapshot ![Snapshot](https://geps.dev/progress/35)
+
+---
+
+## Project Architecture
+
+<img src="uploads/architecture.png" height="500" />
 
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
